@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep dives · SGLang</title>
+<link rel="stylesheet" href="../../../vllm/learning/html/assets/site.css">
+<script>try{const t=localStorage.getItem("learn-theme");if(t)document.documentElement.dataset.theme=t;else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.dataset.theme="dark";}catch(e){}</script>
+</head>
+<body data-page="sglang-deep" data-root="../../..">
+<header class="topbar">
+  <button type="button" class="menu-btn" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="../../../vllm/learning/html/index.html"><span class="brand-mark">⟁</span> Inference Engineering</a>
+  <div class="search"><input type="search" placeholder="Search all lessons…  ( / )" aria-label="Search lessons"><div class="search-results" hidden></div></div>
+  <button type="button" class="theme-btn" aria-label="Toggle dark mode">◐</button>
+</header>
+<div class="layout">
+  <aside class="sidebar"><details class="nav-group" open><summary class="nav-title">Orientation</summary><a class="nav-link" data-page="home" href="../../../vllm/learning/html/index.html"><span class="nav-icon">◆</span><span class="nav-text">Library home</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="mindmap" href="../../../vllm/learning/html/00-mindmap.html"><span class="nav-icon">✶</span><span class="nav-text">Master mind map</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-home" href="index.html"><span class="nav-icon">◇</span><span class="nav-text">SGLang track</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Code-first course</summary><a class="nav-link" data-page="code-course" href="../../../vllm/learning/html/code-first.html"><span class="nav-icon">></span><span class="nav-text">Course & study method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-01" href="../../../vllm/learning/html/code-first-01-request.html"><span class="nav-icon">01</span><span class="nav-text">Request ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-02" href="../../../vllm/learning/html/code-first-02-model.html"><span class="nav-icon">02</span><span class="nav-text">Model forward</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-03" href="../../../vllm/learning/html/code-first-03-cache.html"><span class="nav-icon">03</span><span class="nav-text">KV ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-04" href="../../../vllm/learning/html/code-first-04-scheduler.html"><span class="nav-icon">04</span><span class="nav-text">Scheduling</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-05" href="../../../vllm/learning/html/code-first-05-batch.html"><span class="nav-icon">05</span><span class="nav-text">Batch inputs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-06" href="../../../vllm/learning/html/code-first-06-output.html"><span class="nav-icon">06</span><span class="nav-text">Sampling & lifetime</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-07" href="../../../vllm/learning/html/code-first-07-execution.html"><span class="nav-icon">07</span><span class="nav-text">Overlap & graphs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-08" href="../../../vllm/learning/html/code-first-08-parallel.html"><span class="nav-icon">08</span><span class="nav-text">Tensor parallelism</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-09" href="../../../vllm/learning/html/code-first-09-speculation.html"><span class="nav-icon">09</span><span class="nav-text">Speculative commit</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-10" href="../../../vllm/learning/html/code-first-10-multimodal.html"><span class="nav-icon">10</span><span class="nav-text">Multimodal state</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-11" href="../../../vllm/learning/html/code-first-11-tests.html"><span class="nav-icon">11</span><span class="nav-text">Read the tests</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-12" href="../../../vllm/learning/html/code-first-12-contribution.html"><span class="nav-icon">12</span><span class="nav-text">Make a contribution</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Theory</summary><a class="nav-link" data-page="foundations" href="../../../vllm/learning/html/01-foundations.html"><span class="nav-icon">∑</span><span class="nav-text">Foundations</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="systems" href="../../../vllm/learning/html/02-systems-design.html"><span class="nav-icon">⧉</span><span class="nav-text">Systems design</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">vLLM</summary><a class="nav-link" data-page="vllm-arch" href="../../../vllm/learning/html/vllm-architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-deep" href="../../../vllm/learning/html/vllm-deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-labs" href="../../../vllm/learning/html/vllm-source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group" open><summary class="nav-title">SGLang</summary><a class="nav-link" data-page="sglang-arch" href="architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link active" data-page="sglang-deep" href="deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-labs" href="source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Practice & reference</summary><a class="nav-link" data-page="roadmap" href="../../../vllm/learning/html/03-roadmap-and-labs.html"><span class="nav-icon">⇢</span><span class="nav-text">Roadmap & method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="compare" href="../../../vllm/learning/html/04-comparison-and-reading.html"><span class="nav-icon">⇄</span><span class="nav-text">Compare & read</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="frontiers" href="../../../vllm/learning/html/05-current-frontiers.html"><span class="nav-icon">+</span><span class="nav-text">Current frontiers</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="calculators" href="../../../vllm/learning/html/calculators.html"><span class="nav-icon">◔</span><span class="nav-text">Visual calculators</span><span class="nav-done" title="Marked as studied">✓</span></a></details></aside>
+  <main class="content">
+    <div class="crumbs">SGLang <span>›</span> Deep dives<label class="done-toggle"><input type="checkbox" data-done> Mark as studied</label></div>
+
+    <article class="doc"><h1 id="sglang-implementation-deep-dives">SGLang implementation deep dives</h1>
+<p><a class="doc" href="architecture.html">Architecture</a> | <a class="doc" href="source-labs.html">Source labs</a> |
+<a class="doc" href="../../../vllm/learning/html/01-foundations.html">Shared theory</a></p>
+<h2 id="a-worked-two-request-story"><a class="anchor" href="#a-worked-two-request-story" aria-label="Link to section">#</a>A worked two-request story</h2>
+<p>Think of a finished request leaving its working notes on a shelf. The next
+request can borrow those notes without keeping the first request alive. But
+before starting work, it must protect the notes from being reclaimed.</p>
+<p>Start with an empty cache. A&#39;s prompt is <code>P0..P19</code>. <strong>After A finishes</strong>, B
+arrives with <code>P0..P11, U12..U19</code>, where <code>U12 != P12</code>. These names stand for
+token IDs, not words. Both requests use greedy generation and produce exactly
+two output tokens, named <code>A0, A1</code> and <code>B0, B1</code>; assume no earlier stop.
+Use ordinary dense, full-attention text generation: no prompt logprobs,
+media, LoRA, speculation, hybrid state, sessions, or host offload. The requests
+share the same cache namespace, insertion is enabled, and nothing is evicted
+between them.</p>
+<p><strong>Selected source path, not a universal default:</strong> at local revision
+<code>5eda6b7e674458c0c01f93801012b6ff6c15064e</code>,
+<a class="src" href="../../python/sglang/srt/mem_cache/registry.py" title="Local source: sglang/python/sglang/srt/mem_cache/registry.py"><code>default_radix_cache_factory</code> / <code>create_unified_radix_cache</code></a>
+lead this built-in dense case to a FULL-only <code>UnifiedRadixCache</code>. We deliberately
+read its <strong>Python</strong> <code>UnifiedTreeCore</code>, selected by the
+<a class="src" href="../../test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py" title="Local source: sglang/test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py">lab fixture&#39;s <code>_TREE_CORE_TEST_BACKEND</code></a>.
+An actual engine resolves its core through
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/tree_core_registry.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/tree_core_registry.py"><code>select_tree_core_backend</code></a>;
+do not assume every installation executes the Python walk.</p>
+<p>Page size <strong>4 is illustrative geometry</strong>, not a GPU launch recommendation.
+Assume sufficient capacity and an input/chunk budget allowing B&#39;s eight new
+prompt positions in one step. A&#39;s prefill row below totals any chunks it needed.
+Count useful completed model work, not padded rows or overlapped lookahead.</p>
+<div class="table-wrap"><table><thead><tr><th>Point in the serial story</th><th style="text-align:right">Newly computed prompt positions</th><th style="text-align:right">Useful KV positions for this request</th><th>Cache state</th></tr></thead><tbody><tr><td>A completes prefill and chooses <code>A0</code></td><td style="text-align:right">20</td><td style="text-align:right">20</td><td>Its computed prompt can be checkpointed and protected</td></tr><tr><td>A feeds <code>A0</code>, chooses <code>A1</code>, then finishes</td><td style="text-align:right">0</td><td style="text-align:right">21 before release</td><td>20 page-aligned prompt positions remain reusable, with no live request holding them</td></tr><tr><td>B matches and is admitted</td><td style="text-align:right">0</td><td style="text-align:right">12 matched, no new forward yet</td><td>B reacquires protection of <code>P0..P11</code>; A is already finished</td></tr><tr><td>B prefills <code>U12..U19</code> and chooses <code>B0</code></td><td style="text-align:right">8</td><td style="text-align:right"><code>12 + 8 = 20</code></td><td>Three shared pages plus two new suffix pages on B&#39;s path</td></tr><tr><td>B feeds <code>B0</code>, chooses <code>B1</code>, then finishes</td><td style="text-align:right">0</td><td style="text-align:right">21 before release</td><td>With no eviction, the tree retains <code>12 + 8 + 8 = 28</code> distinct prompt positions, all unheld</td></tr></tbody></table></div>
+<figure class="diagram"><div class="diagram-canvas" role="img" aria-label="B reuses a finished request's prefix, then releases its own hold" tabindex="0"></div><pre class="mermaid-source" hidden>flowchart TB
+    accTitle: B reuses a finished request's prefix, then releases its own hold
+    accDescr: Matching finds twelve reusable positions. Admission protects them. Batch preparation selects eight new inputs, forward metadata describes their twenty-token context, and completion releases the request while retaining eligible cached state.
+    M[&quot;match_kv_cache&lt;br/&gt;12 reusable positions&quot;] --&gt; A[&quot;PrefillAdder.add_one_req&lt;br/&gt;pin, check budgets, admit&quot;]
+    A --&gt; S[&quot;ScheduleBatch.prepare_for_extend&lt;br/&gt;stage 8 new input IDs&quot;]
+    S --&gt;|&quot;resolve_forward_inputs&quot;| F[&quot;ForwardBatch.init_new&lt;br/&gt;8 positions, context length 20&quot;]
+    F --&gt;|&quot;prefill, then one decode, then finish&quot;| R[&quot;release_kv_cache&lt;br/&gt;drop hold, retain eligible KV&quot;]
+    click M &quot;../python/sglang/srt/mem_cache/common.py&quot; &quot;Inspect match_kv_cache&quot;
+    click A &quot;../python/sglang/srt/managers/schedule_policy.py&quot; &quot;Inspect PrefillAdder.add_one_req&quot;
+    click S &quot;../python/sglang/srt/managers/schedule_batch.py&quot; &quot;Inspect ScheduleBatch.prepare_for_extend&quot;
+    click F &quot;../python/sglang/srt/model_executor/forward_batch_info.py&quot; &quot;Inspect ForwardBatch.init_new&quot;
+    click R &quot;../python/sglang/srt/mem_cache/common.py&quot; &quot;Inspect release_kv_cache&quot;</pre><figcaption><span class="diagram-caption">B reuses a finished request's prefix, then releases its own hold</span><span class="diagram-actions"><button type="button" class="diagram-zoom">⤢ Expand</button><button type="button" class="diagram-src">‹/› Source</button></span></figcaption></figure>
+<p>Read the arrows as <strong>changes of responsibility</strong>, not GPU kernels or a timing
+chart. A hit answers <em>what is reusable</em>; admission answers <em>what can safely run</em>;
+forward metadata answers <em>which positions and locations this execution uses</em>.
+Here is the source proof for the table and those boundaries.</p>
+<h3 id="match-a-valid-prefix-is-not-permission-to-allocate"><a class="anchor" href="#match-a-valid-prefix-is-not-permission-to-allocate" aria-label="Link to section">#</a>Match: a valid prefix is not permission to allocate</h3>
+<p><a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>Req.init_next_round_input</code> / <code>_compute_max_prefix_len</code></a>
+cap this lookup at <code>input_len - 1 = 19</code>.
+<a class="src" href="../../python/sglang/srt/mem_cache/common.py" title="Local source: sglang/python/sglang/srt/mem_cache/common.py"><code>match_kv_cache</code></a> adopts the result into
+<code>req.prefix_len</code> and the node handles. Through
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py"><code>UnifiedRadixCache.match_prefix</code></a>,
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py"><code>UnifiedTreeCore.match_prefix</code> / <code>_match_prefix_helper</code></a>
+page-align the key to 16 positions, then find only 12 equal positions before
+the divergent page. <a class="src" href="../../python/sglang/srt/mem_cache/radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/radix_cache.py"><code>RadixKey.match_at</code> / <code>child_key_at</code></a>
+define the token/page and namespace comparisons;
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/full.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/full.py"><code>FullComponent.create_match_validator</code></a>
+requires device state for this device-only hit.</p>
+<p>If A left a compressed 20-token segment, this <strong>lookup can split the tree at
+12 without allocating another copy of the prefix KV</strong>.
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py"><code>UnifiedTreeCore._split_node</code></a>
+and <a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/full.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/full.py"><code>FullComponent.redistribute_on_node_split</code></a>
+split keys and clone <em>location-index slices</em>, not the model&#39;s K/V tensors.
+Three shared pages need not mean three tree nodes.</p>
+<h3 id="admit-do-not-spend-the-memory-you-are-about-to-borrow"><a class="anchor" href="#admit-do-not-spend-the-memory-you-are-about-to-borrow" aria-label="Link to section">#</a>Admit: do not spend the memory you are about to borrow</h3>
+<p><a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py"><code>Scheduler._get_new_batch_prefill_raw</code></a>
+checks request capacity, refreshes the match, and invokes
+<a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py"><code>PrefillAdder.add_one_req</code></a>.
+Inspect its <code>_lock_node</code>, <code>_select_prefill_admission</code>, and
+<code>_commit_prefill_admission</code>: the temporary pin removes the selected prefix
+from evictable capacity <strong>before</strong> the budget decision, then a successful
+admission installs <code>req.lock</code> and sets <code>req.extend_end = 20</code>.
+This prevents counting B&#39;s required prefix as memory available to replace.</p>
+<p>This is where to check our capacity and eight-token-chunk assumptions, together
+with <code>PrefillAdder._check_prefill_budget</code>, <code>ceil_paged_tokens</code>, and
+<code>_update_prefill_budget</code> in that same file. For a fixed token pool,
+<a class="src" href="../../python/sglang/srt/mem_cache/prefill_budget.py" title="Local source: sglang/python/sglang/srt/mem_cache/prefill_budget.py"><code>PrefillBudget._available_and_evictable</code> / <code>check_prefill</code> / <code>reserve</code></a>
+show how reclaimable capacity and reservations enter the decision. New input
+work, future-output headroom, page overhead, and request slots are different
+constraints. Eight uncached tokens do not by themselves guarantee admission.</p>
+<p><a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py"><code>UnifiedRadixCache.lock</code> / <code>unlock</code></a>
+carry a <code>TreeLock</code> receipt; the Python core delegates FULL protection to
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/full.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/full.py"><code>FullComponent.acquire_component_lock</code> / <code>release_component_lock</code></a>.
+At the stable boundaries, the shared prefix has zero request holders after A,
+one for admitted B, then zero after B. The temporary admission pin is not a
+second live request.</p>
+<h3 id="prepare-and-forward-eight-inputs-still-need-a-twenty-position-context"><a class="anchor" href="#prepare-and-forward-eight-inputs-still-need-a-twenty-position-context" aria-label="Link to section">#</a>Prepare and forward: eight inputs still need a twenty-position context</h3>
+<p><a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>ScheduleBatch.prepare_for_extend</code></a>
+slices off the matched prefix. For B, <code>prefix_lens=[12]</code>, <code>extend_lens=[8]</code>,
+<code>seq_lens=[20]</code>, and <code>extend_num_tokens=8</code>.
+<a class="src" href="../../python/sglang/srt/mem_cache/allocation.py" title="Local source: sglang/python/sglang/srt/mem_cache/allocation.py"><code>alloc_for_extend</code> / <code>write_cache_indices</code></a>
+put the existing prefix locations and newly allocated suffix locations into
+B&#39;s request-to-token row. Reuse means sharing those earlier physical locations,
+not copying twelve prompt IDs into the model input again.</p>
+<p>Preparation leaves <code>input_ids=None</code> and stages the eight IDs in
+<code>prefill_input_ids_cpu</code>. <a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py"><code>Scheduler.run_batch</code></a>
+calls <a class="src" href="../../python/sglang/srt/managers/overlap_utils.py" title="Local source: sglang/python/sglang/srt/managers/overlap_utils.py"><code>resolve_forward_inputs</code></a>
+to materialize them at forward entry. This separates CPU planning from the
+device-copy boundary; on ordinary decode, that same resolver instead gathers
+the previous step&#39;s sampled token.</p>
+<p><a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py"><code>TpModelWorker.forward_batch_generation</code></a>
+passes the <code>ScheduleBatch</code> <strong>directly</strong> to
+<a class="src" href="../../python/sglang/srt/model_executor/forward_batch_info.py" title="Local source: sglang/python/sglang/srt/model_executor/forward_batch_info.py"><code>ForwardBatch.init_new</code></a>:
+there is no <code>ModelWorkerBatch</code> hop in this revision. Inspect <code>compute_position</code>
+and <code>compute_position_torch</code> there to derive positions <code>12..19</code>.
+The boundary builds per-forward metadata, including the KV-location plan,
+from the scheduler&#39;s plan; it is not a deep copy of all state. An eight-element
+input slice paired with positions <code>0..7</code> would describe the wrong computation
+even if allocation succeeded.</p>
+<h3 id="finish-releasing-a-request-is-not-erasing-its-useful-work"><a class="anchor" href="#finish-releasing-a-request-is-not-erasing-its-useful-work" aria-label="Link to section">#</a>Finish: releasing a request is not erasing its useful work</h3>
+<p><a class="src" href="../../python/sglang/srt/managers/scheduler_components/batch_result_processor.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py"><code>SchedulerBatchResultProcessor.process_batch_result_prefill</code></a>
+appends the first chosen output and calls
+<a class="src" href="../../python/sglang/srt/mem_cache/common.py" title="Local source: sglang/python/sglang/srt/mem_cache/common.py"><code>checkpoint_kv_cache</code></a> for an unfinished
+ordinary request. <strong>Choosing <code>A0</code> does not compute its KV.</strong>
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>ScheduleBatch.prepare_for_decode</code></a>
+prepares the later one-token step that consumes it.
+<code>process_batch_result_decode</code> and <code>_handle_finish_state_updated_req</code> in the
+<a class="src" href="../../python/sglang/srt/managers/scheduler_components/batch_result_processor.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py">result processor</a>
+append the second output, update finish state, and reach <code>release_kv_cache</code>.</p>
+<p><a class="src" href="../../python/sglang/srt/mem_cache/common.py" title="Local source: sglang/python/sglang/srt/mem_cache/common.py"><code>release_kv_cache</code></a> uses
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>Req.owned_kv_len</code></a>, refreshes
+the token IDs, and checkpoints before freeing the unprotected tail and the
+request row. <a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py"><code>UnifiedRadixCache.checkpoint_into_tree</code></a>
+retains page-aligned KV and moves the lock to the canonical tree path.
+In this ledger, 21 computed positions floor to 20 at page size 4, so the
+one computed output position is not retained in the tree; the last chosen
+output has not been fed through the model at all. Releasing the lock makes
+the retained prompt evictable, not already freed.
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py"><code>UnifiedRadixCache.evict</code></a>
+is a separate reclamation operation.</p>
+<p>Thus the prompt-work arithmetic is <strong>A:20, B:8</strong>, not <code>20 + 20</code>.
+The subsequent single-token decode step for each request is separate.
+This is neither a latency prediction nor a throughput measurement.</p>
+<details class="reveal"><summary>Surprising edge case: what if B's entire 20-token prompt were identical?</summary>
+
+<p>Even with all 20 positions cached, this request path caps matching at 19
+before page alignment. With the illustrative page size 4, that allows a
+16-token hit and <strong>four</strong> recomputed prompt positions, not zero.
+The final prompt position must still produce the logits used to choose the
+next token, even without requested prompt logprobs. Check
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>Req._compute_max_prefix_len</code></a>,
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py"><code>UnifiedTreeCore.match_prefix</code></a>,
+and <a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py"><code>TpModelWorker.forward_batch_generation</code></a>.
+Our divergent B already stops matching at 12, so that cap does not change its
+eight new positions.</p>
+</details>
+
+<p>Try the <a class="doc" href="source-labs.html#guided-lab-two-requests-one-reusable-prefix">guided lab</a>
+before the advanced sections. Use the
+<a class="doc" href="../../../vllm/learning/html/vllm-deep-dives.html">companion vLLM deep dive</a> to compare the
+same ownership questions, not tree-node counts with block counts. Separate
+this pinned source trace from the
+<a class="doc" href="../../../vllm/learning/html/05-current-frontiers.html">upstream reading checked on 2026-11-05</a>.</p>
+<h2 id="1-radix-reuse-keys-values-and-ownership"><a class="anchor" href="#1-radix-reuse-keys-values-and-ownership" aria-label="Link to section">#</a>1. Radix reuse: keys, values, and ownership</h2>
+<p>Sources: <a class="src" href="../../python/sglang/srt/mem_cache/radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/radix_cache.py">classic radix cache</a>,
+<a class="src" href="../../python/sglang/srt/mem_cache/base_prefix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/base_prefix_cache.py">prefix-cache interface</a>,
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py">request state</a>.</p>
+<p>This classic <code>RadixCache</code> is a compact alternative to study, not an additional
+stage before the worked story&#39;s unified controller. Verify selection in
+<a class="src" href="../../python/sglang/srt/mem_cache/registry.py" title="Local source: sglang/python/sglang/srt/mem_cache/registry.py"><code>default_radix_cache_factory</code></a>
+before applying its method names to a serving trace.</p>
+<p>A radix tree stores compressed token-prefix segments. A path identifies a
+prefix; its cached values identify the corresponding KV locations. The tree
+does not contain an attention matrix and does not replace the attention kernel.</p>
+<p>In the inspected classic implementation:</p>
+<ul>
+<li><code>match_prefix</code> aligns the key to cache-page granularity and returns a
+<code>MatchResult</code> describing the valid matched prefix and nodes.</li>
+<li>Matching can split a segment to expose a shared boundary without duplicating
+the underlying semantic prefix.</li>
+<li><code>insert</code> adds eligible token segments and associated locations.</li>
+<li><code>inc_lock_ref</code> protects the matched path; <code>dec_lock_ref</code> makes appropriate
+segments evictable again.</li>
+<li><code>evict</code> chooses eligible leaves under the configured eviction strategy,
+frees their segments, and can expose newly eligible parent leaves.</li>
+</ul>
+<p>Do not assume every eviction policy is LRU; inspect configuration.</p>
+<h3 id="worked-branching-example"><a class="anchor" href="#worked-branching-example" aria-label="Link to section">#</a>Worked branching example</h3>
+<p>For readability, treat letters as token IDs and use page size one:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">A: [a b c d e]
+B: [a b c x y]
+
+After branching:
+root -&gt; [a b c] -&gt; [d e]
+               -&gt; [x y]</code></pre></div>
+<p>Request B can reuse the state for <code>[a b c]</code>, then compute <code>[x y]</code>. If A and B
+are both active, the shared prefix must remain protected. Finishing A must
+not make B&#39;s shared state reclaimable. If page size is four instead, a
+three-token shared prefix may provide no complete reusable page in this
+simplified example.</p>
+<p>The inspected key logic also carries namespace/cache-salt information.
+Adapter or media identity must be represented consistently by the upstream
+path; the mere existence of an <code>extra_key</code> field does not prove a caller
+supplies all needed identity.</p>
+<h3 id="important-distinctions"><a class="anchor" href="#important-distinctions" aria-label="Link to section">#</a>Important distinctions</h3>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">request-to-token mapping: which logical position uses which location?
+allocator:               which physical slots can be handed out?
+pool:                    where are the tensor bytes?
+radix cache:             which prefixes may be reused or evicted?</code></pre></div>
+<p>Trace all four when debugging stale KV. A correct tree lookup cannot repair a
+wrong request-row mapping or premature allocator reuse.</p>
+<p>Tests:
+<a class="src" href="../../test/registered/unit/mem_cache/test_radix_cache_unit.py" title="Local source: sglang/test/registered/unit/mem_cache/test_radix_cache_unit.py">radix unit cases</a>,
+<a class="src" href="../../test/registered/unit/mem_cache/test_decode_radix_lock_ref.py" title="Local source: sglang/test/registered/unit/mem_cache/test_decode_radix_lock_ref.py">decode lock references</a>,
+<a class="src" href="../../test/registered/radix_cache/test_radix_cache_hit.py" title="Local source: sglang/test/registered/radix_cache/test_radix_cache_hit.py">cache-hit serving cases</a>.</p>
+<h2 id="2-unified-cache-one-logical-tree-several-physical-state-types"><a class="anchor" href="#2-unified-cache-one-logical-tree-several-physical-state-types" aria-label="Link to section">#</a>2. Unified cache: one logical tree, several physical state types</h2>
+<p>Sources: <a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py">controller</a>,
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py">tree core</a>,
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/README.md" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/README.md">component design</a>.</p>
+<p>The unified design separates logical tree decisions from physical resource
+actions. Full-attention, SWA, and Mamba components maintain their own state,
+locks, residency, and eviction behavior.</p>
+<p>A node can retain logical structure even when one component&#39;s data has been
+evicted. Therefore, <strong>finding a token path is not sufficient for a valid hit</strong>:
+every required component must permit resumption at that boundary.</p>
+<div class="table-wrap"><table><thead><tr><th>Component</th><th>Retained state</th><th>Why prefix validation differs</th></tr></thead><tbody><tr><td>Full</td><td>KV across accessible history</td><td>Missing old KV can invalidate the prefix</td></tr><tr><td>SWA</td><td>Window-relevant KV</td><td>Old positions outside the needed window can be absent</td></tr><tr><td>Mamba/SSM</td><td>Recurrent state/checkpoints</td><td>Branching may require a copy or specific checkpoint</td></tr></tbody></table></div>
+<p>The tree emits deferred actions and the cache/controller performs pool/host
+operations. This keeps the logical index from directly owning every physical
+copy/free behavior.</p>
+<p>The component documentation specifies per-component lock references and
+coordinated eviction priorities. Do not transfer the classic tree&#39;s one-payload
+reasoning unchanged to this design.</p>
+<div class="callout invariant"><div class="callout-label">Invariant</div><p>a reported reusable prefix has a compatible resume state in
+every required pool, and a branch cannot mutate another request&#39;s recurrent
+state. Copy-on-write may apply to state components even when attention KV is
+shareable as immutable prefix data.</p></div>
+<p>Read tests for
+<a class="src" href="../../test/registered/unit/mem_cache/test_unified_radix_allocation_eviction.py" title="Local source: sglang/test/registered/unit/mem_cache/test_unified_radix_allocation_eviction.py">unified allocation/eviction</a>
+and <a class="src" href="../../test/registered/unit/mem_cache/test_unified_radix_lock_ref.py" title="Local source: sglang/test/registered/unit/mem_cache/test_unified_radix_lock_ref.py">unified lock references</a>.
+Determine which cache implementation your model/configuration selects before
+choosing a regression test.</p>
+<h2 id="3-hicache-a-hit-is-useful-only-if-state-arrives-in-time"><a class="anchor" href="#3-hicache-a-hit-is-useful-only-if-state-arrives-in-time" aria-label="Link to section">#</a>3. HiCache: a hit is useful only if state arrives in time</h2>
+<p>Read <a class="src" href="../../docs/docs/advanced_features/hicache_design.mdx" title="Local source: sglang/docs/docs/advanced_features/hicache_design.mdx">HiCache design</a>,
+<a class="src is-dir" href="../../python/sglang/srt/mem_cache/pool_host" title="Local source: sglang/python/sglang/srt/mem_cache/pool_host">host pools</a>, and
+<a class="src is-dir" href="../../python/sglang/srt/mem_cache/storage" title="Local source: sglang/python/sglang/srt/mem_cache/storage">storage backends</a>.</p>
+<p>The documented tier scope is:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">L1 = instance-local GPU memory
+L2 = instance-private host memory
+L3 = configured storage backend, potentially shared</code></pre></div>
+<p>Two instances on the same node do not automatically share L2. A file-backed L3
+is not cluster-wide unless its storage configuration makes it so.</p>
+<p>Workflow:</p>
+<ol>
+<li>Match device/host-resident prefixes.</li>
+<li>Query/prefetch eligible missing state from storage.</li>
+<li>Move required state into device-accessible locations.</li>
+<li>Coordinate readiness with scheduling/execution.</li>
+<li>Back up or write back newly produced state under the selected policy.</li>
+<li>Evict only resources whose ownership and in-flight transfers permit it.</li>
+</ol>
+<p>Two costs compete:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">restore cost = lookup + storage/network + host/device copy + synchronization
+recompute cost = prefill work that would otherwise be repeated</code></pre></div>
+<p>A larger hit count can make latency worse if restoring small/cold objects is
+slower than recomputing them. Report bytes, useful reused tokens, transfer
+overlap, and p95/p99 TTFT, not only a hit ratio.</p>
+<p>HiCache stores model state; it is not the same as an image processor or encoder
+embedding cache.</p>
+<h2 id="4-scheduling-policy-plus-capacity"><a class="anchor" href="#4-scheduling-policy-plus-capacity" aria-label="Link to section">#</a>4. Scheduling: policy plus capacity</h2>
+<p>Read <a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py">scheduler</a>,
+<a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py">scheduling policy</a>, and
+<a class="src" href="../../python/sglang/srt/mem_cache/allocation.py" title="Local source: sglang/python/sglang/srt/mem_cache/allocation.py">allocation</a>.</p>
+<p><code>get_next_batch_to_run</code> handles pending cleanup/cache events, merges eligible
+prefill results into running work, and chooses the next plan. <code>run_batch</code>
+dispatches according to the batch&#39;s forward mode and enabled execution path.</p>
+<p>Separate the questions:</p>
+<ul>
+<li><strong>Ordering:</strong> which waiting request should be considered next?</li>
+<li><strong>Admission:</strong> can it fit the needed request slots, token/state capacity,
+chunks, and reservations?</li>
+<li><strong>Execution shape:</strong> how many new positions and which forward mode?</li>
+<li><strong>Retention:</strong> what remains cached/protected afterward?</li>
+</ul>
+<p>A prefix-aware policy can improve reuse while worsening fairness for unrelated
+requests. A token budget can leave memory unavailable for the next decode.
+Chunking can improve decode latency but add prefill overhead. These are workload
+tradeoffs, not contradictions.</p>
+<h3 id="ordering-policies-in-the-inspected-checkout"><a class="anchor" href="#ordering-policies-in-the-inspected-checkout" aria-label="Link to section">#</a>Ordering policies in the inspected checkout</h3>
+<p><code>--schedule-policy</code> in <a class="src" href="../../python/sglang/srt/arg_groups/fields/schedule.py" title="Local source: sglang/python/sglang/srt/arg_groups/fields/schedule.py">schedule arguments</a>
+defaults to <code>fcfs</code>. <a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py">Schedule policy</a>
+divides policies into two families:</p>
+<div class="table-wrap"><table><thead><tr><th>Family</th><th>Policies</th><th>Behavior to verify</th></tr></thead><tbody><tr><td>Cache-aware (<code>CacheAwarePolicy</code>)</td><td><code>lpm</code> longest prefix match, <code>dfs-weight</code>, <code>hrrn</code></td><td>Use radix-tree matches to order waiting requests</td></tr><tr><td>Cache-agnostic (<code>CacheAgnosticPolicy</code>)</td><td><code>fcfs</code>, <code>lof</code> longest output first, <code>random</code>, <code>routing-key</code></td><td>Ignore prefix structure</td></tr><tr><td>Other choices</td><td><code>priority</code>, <code>shortest-prefill-first</code></td><td>Inspect validation and selection code before use</td></tr></tbody></table></div>
+<p><code>_determine_active_policy</code> silently downgrades <code>lpm</code> and <code>hrrn</code> to <code>fcfs</code> when
+the waiting queue exceeds <code>WAITING_QUEUE_PREFIX_MATCH_MAX</code> (128), because
+matching every queued request becomes too expensive. <strong>An LPM benchmark with a
+deep queue may actually be measuring FCFS.</strong></p>
+<h3 id="admission-reserves-future-decode-memory"><a class="anchor" href="#admission-reserves-future-decode-memory" aria-label="Link to section">#</a>Admission reserves future decode memory</h3>
+<p>A useful distinction is <strong>admission headroom versus allocated KV</strong>.
+<a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py"><code>PrefillAdder.add_one_req</code></a>
+checks a candidate&#39;s uncached input plus its capped remaining output allowance
+and page overhead. The running-request estimate is a separate calculation in
+<code>_get_running_request_total_token_offset</code>:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">estimated_running_headroom(req) =
+    min(max_new_tokens - generated_so_far, CLIP_MAX_NEW_TOKENS)
+    * new_token_ratio          (ratio is 1.0 when ignore_eos is set)</code></pre></div>
+<p>Do not multiply a fresh candidate&#39;s allowance by <code>new_token_ratio</code> merely
+because the running-request estimate does. Inspect <code>_update_prefill_budget</code>
+and the allocator&#39;s
+<a class="src" href="../../python/sglang/srt/mem_cache/allocator/base.py" title="Local source: sglang/python/sglang/srt/mem_cache/allocator/base.py"><code>create_prefill_budget</code></a>
+implementation for the selected pool; the fixed-token
+<a class="src" href="../../python/sglang/srt/mem_cache/prefill_budget.py" title="Local source: sglang/python/sglang/srt/mem_cache/prefill_budget.py"><code>PrefillBudget.reserve</code></a>
+adds the candidate&#39;s output allowance without that ratio. These are scheduling
+reservations, not proof that every future output already has a KV position.</p>
+<p><a class="src" href="../../python/sglang/srt/managers/scheduler_components/new_token_ratio_tracker.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/new_token_ratio_tracker.py"><code>NewTokenRatioTracker</code></a>
+controls the ratio:</p>
+<ul>
+<li>It starts at <code>SGLANG_INIT_NEW_TOKEN_RATIO * schedule_conservativeness</code>,
+capped at 1.0.</li>
+<li>Each quiet decode step decays it linearly toward a floor, admitting more work
+as confidence grows that requests stop before <code>max_new_tokens</code>.</li>
+<li>After a retraction it is <strong>re-estimated</strong> from observed progress:
+<code>(decoded + RETRACT_DECODE_STEPS * num_reqs) / total_max_new_tokens</code>.</li>
+</ul>
+<p><code>--schedule-conservativeness</code> therefore trades admission aggressiveness for
+retraction risk. Clients that send huge <code>max_tokens</code> values they never use make
+this estimator pessimistic and reduce concurrency.</p>
+<h3 id="retraction-when-the-estimate-is-wrong"><a class="anchor" href="#retraction-when-the-estimate-is-wrong" aria-label="Link to section">#</a>Retraction when the estimate is wrong</h3>
+<p><code>ScheduleBatch.check_decode_mem</code> asks the allocator whether the next decode
+step fits. If not, <code>retract_decode</code> in <a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py">schedule batch</a>:</p>
+<ol>
+<li>Orders requests by <code>--retraction-policy</code>. The default <code>length</code> policy keeps
+requests with more generated output and retracts those with the least
+output first, breaking ties by retracting longer inputs first. The
+<code>priority</code> policy uses request priority.</li>
+<li>Pops victims until the remaining batch fits, always keeping at least one.</li>
+<li>Releases each victim&#39;s memory <strong>without inserting it into the radix tree</strong>,
+because the space is needed immediately.</li>
+<li>Aborts, rather than requeues, beam groups and requests that cannot resume,
+for example because no KV backup exists in the configured mode.</li>
+<li>Aborts the last request if even it cannot fit, instead of crashing.</li>
+</ol>
+<p>Compare <a class="doc" href="../../../vllm/learning/html/vllm-deep-dives.html#2-scheduling-and-async-bookkeeping">vLLM preemption</a>:</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>vLLM V1 (inspected)</th><th>SGLang (inspected)</th></tr></thead><tbody><tr><td>When is future decode memory accounted?</td><td>On demand, step by step</td><td>Estimated and reserved at admission</td></tr><tr><td>What happens on shortage?</td><td>Preempt a running request and recompute later</td><td>Retract decode requests and adjust admission ratio</td></tr><tr><td>Default victim</td><td>Most recently admitted running request</td><td>Least generated output, then longer input</td></tr><tr><td>Cache after eviction</td><td>Freed blocks keep hashes until reassigned</td><td>Retracted KV is not inserted into the radix tree</td></tr><tr><td>Tuning knob</td><td>Batch/token limits, memory utilization</td><td><code>schedule_conservativeness</code>, retraction policy, limits</td></tr></tbody></table></div>
+<p>Neither design is universally better. Reservation reduces wasted recompute
+but can leave capacity idle when outputs are shorter than predicted. On-demand
+allocation packs more aggressively but can thrash under long outputs. Measure
+admitted concurrency, retractions or preemptions, and recomputed tokens on
+your own output-length distribution.</p>
+<p>Track waiting/running counts, actual prefill chunk sizes, newly computed
+versus reused tokens, retractions, and iteration duration. A peak-throughput
+number does not identify the scheduling mechanism that improved it.</p>
+<h2 id="5-forward-execution-metadata-and-overlap"><a class="anchor" href="#5-forward-execution-metadata-and-overlap" aria-label="Link to section">#</a>5. Forward execution, metadata, and overlap</h2>
+<p>Sources: <a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py">TP worker</a>,
+<a class="src" href="../../python/sglang/srt/model_executor/forward_batch_info.py" title="Local source: sglang/python/sglang/srt/model_executor/forward_batch_info.py">ForwardBatch</a>,
+<a class="src" href="../../python/sglang/srt/model_executor/model_runner.py" title="Local source: sglang/python/sglang/srt/model_executor/model_runner.py">runner</a>.</p>
+<p><code>forward_batch_generation</code> converts scheduler-owned data into forward metadata,
+calls the runner, and forms generation results. Verification modes can skip
+ordinary sampling; overlap/grammar paths can defer it.</p>
+<p>For one request, explicitly record:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">request row / request ID
+input token slice
+position slice
+prefix and total sequence lengths
+cache write locations
+attention read mapping
+sampling and grammar state</code></pre></div>
+<p>Flattening several ragged requests into tensors is efficient only if these
+boundaries agree. A wrong offset can produce plausible but unrelated text.</p>
+<h3 id="what-radixattention-does"><a class="anchor" href="#what-radixattention-does" aria-label="Link to section">#</a>What RadixAttention does</h3>
+<p>The <a class="src" href="../../python/sglang/srt/layers/radix_attention.py" title="Local source: sglang/python/sglang/srt/layers/radix_attention.py">layer</a> adapts Q/K/V and
+forward metadata into the configured attention execution path. Piecewise
+compilation and specialized wrappers can alter dispatch.</p>
+<p>Its job is not to walk prefix strings. Follow the selected
+<a class="src is-dir" href="../../python/sglang/srt/layers/attention" title="Local source: sglang/python/sglang/srt/layers/attention">attention backend</a> into its metadata
+setup, cache access, and kernel call. Keep model semantics, metadata, and device
+layout separate in your explanation.</p>
+<h3 id="graphs-and-streams"><a class="anchor" href="#graphs-and-streams" aria-label="Link to section">#</a>Graphs and streams</h3>
+<p>Graph/compile setup is reached through the runner&#39;s initialization methods and
+<a class="src is-dir" href="../../python/sglang/srt/model_executor" title="Local source: sglang/python/sglang/srt/model_executor">execution helpers</a>.
+Read <a class="src is-dir" href="../../python/sglang/srt/compilation" title="Local source: sglang/python/sglang/srt/compilation">compilation</a> for the actual selected path,
+not an old tutorial&#39;s graph-runner filename.</p>
+<p>The overlap scheduler coordinates schedule and forward streams, result queues,
+and shared-read fences. A tensor&#39;s Python lifetime and the completion of a GPU
+read are different facts. Reusing pinned CPU buffers while an async copy is
+outstanding is also unsafe.</p>
+<p>Proof of useful overlap requires a timeline showing less exposed idle time;
+adding streams does not itself demonstrate parallel execution.</p>
+<h2 id="6-multimodal-source-trace-qwen25-vl"><a class="anchor" href="#6-multimodal-source-trace-qwen25-vl" aria-label="Link to section">#</a>6. Multimodal source trace: Qwen2.5-VL</h2>
+<p>Read <a class="src" href="../../python/sglang/srt/models/qwen2_5_vl.py" title="Local source: sglang/python/sglang/srt/models/qwen2_5_vl.py">model</a>,
+<a class="src is-dir" href="../../python/sglang/srt/multimodal/processors" title="Local source: sglang/python/sglang/srt/multimodal/processors">processors</a>, and
+<a class="src" href="../../python/sglang/srt/managers/mm_utils.py" title="Local source: sglang/python/sglang/srt/managers/mm_utils.py">embedding integration</a>.</p>
+<p>The model exposes <code>pad_input_ids</code> to establish multimodal token structure.
+Its forward uses multimodal rotary positions when configured and delegates
+embedding integration to <code>general_mm_embed_routine</code>.</p>
+<p>Follow <code>general_mm_embed_routine</code> in the
+<a class="src" href="../../python/sglang/srt/managers/mm_utils.py" title="Local source: sglang/python/sglang/srt/managers/mm_utils.py">embedding integration helpers</a>.
+Inspect how encoder outputs, cached embeddings, and precomputed inputs affect
+the selected path instead of assuming every request always runs the encoder
+inline.</p>
+<p>Key checks:</p>
+<ol>
+<li>Do media-item order and placeholder spans agree?</li>
+<li>Do feature count and padded token count agree after processor transforms?</li>
+<li>Are image/video positions correct, including temporal dimensions?</li>
+<li>Does a chunk boundary preserve required media/state semantics?</li>
+<li>Are cached features and LM KV keyed by the right identity?</li>
+</ol>
+<p>The <a class="src" href="../../docs/docs/advanced_features/epd_disaggregation.mdx" title="Local source: sglang/docs/docs/advanced_features/epd_disaggregation.mdx">EPD guide</a>
+distinguishes <strong>encoder output transport</strong> from <strong>global embedding caching</strong>.
+Enabling a transport does not imply cross-instance embedding reuse.</p>
+<h2 id="7-advanced-serving-inspect-the-handshake-not-just-the-flag"><a class="anchor" href="#7-advanced-serving-inspect-the-handshake-not-just-the-flag" aria-label="Link to section">#</a>7. Advanced serving: inspect the handshake, not just the flag</h2>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Source / guide</th><th>Contract to verify</th></tr></thead><tbody><tr><td>Speculation</td><td><a class="src is-dir" href="../../python/sglang/srt/speculative" title="Local source: sglang/python/sglang/srt/speculative">Implementation</a>, <a class="src" href="../../docs/docs/advanced_features/speculative_decoding.mdx" title="Local source: sglang/docs/docs/advanced_features/speculative_decoding.mdx">guide</a></td><td>Draft/target separation, verify masks, committed lengths, rejected-slot cleanup</td></tr><tr><td>Grammar</td><td><a class="src is-dir" href="../../python/sglang/srt/constrained" title="Local source: sglang/python/sglang/srt/constrained">Constrained generation</a></td><td>Grammar state follows committed tokens and sampling barriers</td></tr><tr><td>LoRA</td><td><a class="src is-dir" href="../../python/sglang/srt/lora" title="Local source: sglang/python/sglang/srt/lora">Implementation</a>, <a class="src" href="../../docs/docs/advanced_features/lora.mdx" title="Local source: sglang/docs/docs/advanced_features/lora.mdx">guide</a></td><td>Adapter identity/residency and prefix isolation</td></tr><tr><td>PD</td><td><a class="src" href="../../python/sglang/srt/disaggregation/prefill.py" title="Local source: sglang/python/sglang/srt/disaggregation/prefill.py">Prefill</a>, <a class="src" href="../../python/sglang/srt/disaggregation/decode.py" title="Local source: sglang/python/sglang/srt/disaggregation/decode.py">decode</a></td><td>Reservation, readiness, transfer completion, cancellation and reclamation</td></tr><tr><td>Distributed/MoE</td><td><a class="src" href="../../python/sglang/srt/distributed/parallel_state.py" title="Local source: sglang/python/sglang/srt/distributed/parallel_state.py">Parallel state</a>, <a class="src is-dir" href="../../python/sglang/srt/layers/moe" title="Local source: sglang/python/sglang/srt/layers/moe">MoE</a></td><td>Matching collective order and compatible per-rank shapes</td></tr><tr><td>Hybrid state</td><td><a class="src is-dir" href="../../python/sglang/srt/mem_cache/hybrid_cache" title="Local source: sglang/python/sglang/srt/mem_cache/hybrid_cache">Hybrid pools</a>, <a class="src is-dir" href="../../python/sglang/srt/mem_cache/unified_cache/components" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components">unified components</a></td><td>Separate capacity bottlenecks, checkpoint/branch validity</td></tr></tbody></table></div>
+<p>A speculative proposal count is not an accepted-token count. A transfer being
+submitted is not it being complete. A node existing is not its data being
+resident. These distinctions are central to both correctness and performance.</p>
+<h2 id="8-debugging-order"><a class="anchor" href="#8-debugging-order" aria-label="Link to section">#</a>8. Debugging order</h2>
+<ol>
+<li>Reproduce using exact model/tokenizer/template, request tokens/media, sampling
+settings, effective configuration, and topology.</li>
+<li>Classify the first divergent boundary: preprocessing, prefix match, allocation,
+metadata, forward, sampling, output, or cleanup.</li>
+<li>Minimize: one GPU, eager/baseline execution, no speculation, simple cache mode
+where supported. Change one axis at a time.</li>
+<li>Compare inputs and logits/state, not only final free-form text.</li>
+<li>For a hang, collect all-rank progress/stacks and identify the first unequal
+control-flow or collective sequence.</li>
+<li>After correction, re-enable the original features and replay the original
+workload. Passing a simpler path alone does not close the bug.</li>
+</ol>
+<p>Use <a class="src" href="../../docs/docs/developer_guide/benchmark_and_profiling.mdx" title="Local source: sglang/docs/docs/developer_guide/benchmark_and_profiling.mdx">profiling guidance</a>
+and the <a class="doc" href="source-labs.html">source labs</a> to turn this into repeatable practice.</p>
+<div class="callout next"><div class="callout-label">Next step</div><p><a class="doc" href="../../../vllm/learning/html/03-roadmap-and-labs.html">Expert roadmap and experimental method</a>.</p></div>
+</article>
+    <nav class="pager"><a class="pager-prev" href="architecture.html"><span>← Previous</span><strong>SGLang: Architecture</strong></a><a class="pager-next" href="source-labs.html"><span>Next →</span><strong>SGLang: Source labs</strong></a></nav>
+    <footer class="site-foot">Generated from the Markdown sources in <code>sglang/learning/deep-dives.md</code>. Rebuild with <code>npm run build</code> in <code>vllm/learning/html-src</code>.</footer>
+  </main>
+  <nav class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-link d2" href="#a-worked-two-request-story">A worked two-request story</a><a class="toc-link d3" href="#match-a-valid-prefix-is-not-permission-to-allocate">Match: a valid prefix is not permission to allocate</a><a class="toc-link d3" href="#admit-do-not-spend-the-memory-you-are-about-to-borrow">Admit: do not spend the memory you are about to borrow</a><a class="toc-link d3" href="#prepare-and-forward-eight-inputs-still-need-a-twenty-position-context">Prepare and forward: eight inputs still need a twenty-position context</a><a class="toc-link d3" href="#finish-releasing-a-request-is-not-erasing-its-useful-work">Finish: releasing a request is not erasing its useful work</a><a class="toc-link d2" href="#1-radix-reuse-keys-values-and-ownership">1. Radix reuse: keys, values, and ownership</a><a class="toc-link d3" href="#worked-branching-example">Worked branching example</a><a class="toc-link d3" href="#important-distinctions">Important distinctions</a><a class="toc-link d2" href="#2-unified-cache-one-logical-tree-several-physical-state-types">2. Unified cache: one logical tree, several physical state types</a><a class="toc-link d2" href="#3-hicache-a-hit-is-useful-only-if-state-arrives-in-time">3. HiCache: a hit is useful only if state arrives in time</a><a class="toc-link d2" href="#4-scheduling-policy-plus-capacity">4. Scheduling: policy plus capacity</a><a class="toc-link d3" href="#ordering-policies-in-the-inspected-checkout">Ordering policies in the inspected checkout</a><a class="toc-link d3" href="#admission-reserves-future-decode-memory">Admission reserves future decode memory</a><a class="toc-link d3" href="#retraction-when-the-estimate-is-wrong">Retraction when the estimate is wrong</a><a class="toc-link d2" href="#5-forward-execution-metadata-and-overlap">5. Forward execution, metadata, and overlap</a><a class="toc-link d3" href="#what-radixattention-does">What RadixAttention does</a><a class="toc-link d3" href="#graphs-and-streams">Graphs and streams</a><a class="toc-link d2" href="#6-multimodal-source-trace-qwen25-vl">6. Multimodal source trace: Qwen2.5-VL</a><a class="toc-link d2" href="#7-advanced-serving-inspect-the-handshake-not-just-the-flag">7. Advanced serving: inspect the handshake, not just the flag</a><a class="toc-link d2" href="#8-debugging-order">8. Debugging order</a></nav>
+</div>
+<div class="modal" hidden><div class="modal-bar"><span class="modal-title">Diagram</span><span class="modal-hint">Scroll to zoom · drag to pan</span><button type="button" class="modal-close" aria-label="Close">✕</button></div><div class="modal-stage"></div></div>
+
+<script src="../../../vllm/learning/html/assets/search-index.js"></script>
+<script src="../../../vllm/learning/html/assets/vendor/mermaid.min.js"></script>
+<script src="../../../vllm/learning/html/assets/charts.js"></script>
+<script src="../../../vllm/learning/html/assets/widgets.js"></script>
+<script src="../../../vllm/learning/html/assets/mindmap.js"></script>
+<script src="../../../vllm/learning/html/assets/site.js"></script>
+</body>
+</html>

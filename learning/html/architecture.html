@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture · SGLang</title>
+<link rel="stylesheet" href="../../../vllm/learning/html/assets/site.css">
+<script>try{const t=localStorage.getItem("learn-theme");if(t)document.documentElement.dataset.theme=t;else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.dataset.theme="dark";}catch(e){}</script>
+</head>
+<body data-page="sglang-arch" data-root="../../..">
+<header class="topbar">
+  <button type="button" class="menu-btn" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="../../../vllm/learning/html/index.html"><span class="brand-mark">⟁</span> Inference Engineering</a>
+  <div class="search"><input type="search" placeholder="Search all lessons…  ( / )" aria-label="Search lessons"><div class="search-results" hidden></div></div>
+  <button type="button" class="theme-btn" aria-label="Toggle dark mode">◐</button>
+</header>
+<div class="layout">
+  <aside class="sidebar"><details class="nav-group" open><summary class="nav-title">Orientation</summary><a class="nav-link" data-page="home" href="../../../vllm/learning/html/index.html"><span class="nav-icon">◆</span><span class="nav-text">Library home</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="mindmap" href="../../../vllm/learning/html/00-mindmap.html"><span class="nav-icon">✶</span><span class="nav-text">Master mind map</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-home" href="index.html"><span class="nav-icon">◇</span><span class="nav-text">SGLang track</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Code-first course</summary><a class="nav-link" data-page="code-course" href="../../../vllm/learning/html/code-first.html"><span class="nav-icon">></span><span class="nav-text">Course & study method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-01" href="../../../vllm/learning/html/code-first-01-request.html"><span class="nav-icon">01</span><span class="nav-text">Request ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-02" href="../../../vllm/learning/html/code-first-02-model.html"><span class="nav-icon">02</span><span class="nav-text">Model forward</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-03" href="../../../vllm/learning/html/code-first-03-cache.html"><span class="nav-icon">03</span><span class="nav-text">KV ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-04" href="../../../vllm/learning/html/code-first-04-scheduler.html"><span class="nav-icon">04</span><span class="nav-text">Scheduling</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-05" href="../../../vllm/learning/html/code-first-05-batch.html"><span class="nav-icon">05</span><span class="nav-text">Batch inputs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-06" href="../../../vllm/learning/html/code-first-06-output.html"><span class="nav-icon">06</span><span class="nav-text">Sampling & lifetime</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-07" href="../../../vllm/learning/html/code-first-07-execution.html"><span class="nav-icon">07</span><span class="nav-text">Overlap & graphs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-08" href="../../../vllm/learning/html/code-first-08-parallel.html"><span class="nav-icon">08</span><span class="nav-text">Tensor parallelism</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-09" href="../../../vllm/learning/html/code-first-09-speculation.html"><span class="nav-icon">09</span><span class="nav-text">Speculative commit</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-10" href="../../../vllm/learning/html/code-first-10-multimodal.html"><span class="nav-icon">10</span><span class="nav-text">Multimodal state</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-11" href="../../../vllm/learning/html/code-first-11-tests.html"><span class="nav-icon">11</span><span class="nav-text">Read the tests</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-12" href="../../../vllm/learning/html/code-first-12-contribution.html"><span class="nav-icon">12</span><span class="nav-text">Make a contribution</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Theory</summary><a class="nav-link" data-page="foundations" href="../../../vllm/learning/html/01-foundations.html"><span class="nav-icon">∑</span><span class="nav-text">Foundations</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="systems" href="../../../vllm/learning/html/02-systems-design.html"><span class="nav-icon">⧉</span><span class="nav-text">Systems design</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">vLLM</summary><a class="nav-link" data-page="vllm-arch" href="../../../vllm/learning/html/vllm-architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-deep" href="../../../vllm/learning/html/vllm-deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-labs" href="../../../vllm/learning/html/vllm-source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group" open><summary class="nav-title">SGLang</summary><a class="nav-link active" data-page="sglang-arch" href="architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-deep" href="deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-labs" href="source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Practice & reference</summary><a class="nav-link" data-page="roadmap" href="../../../vllm/learning/html/03-roadmap-and-labs.html"><span class="nav-icon">⇢</span><span class="nav-text">Roadmap & method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="compare" href="../../../vllm/learning/html/04-comparison-and-reading.html"><span class="nav-icon">⇄</span><span class="nav-text">Compare & read</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="frontiers" href="../../../vllm/learning/html/05-current-frontiers.html"><span class="nav-icon">+</span><span class="nav-text">Current frontiers</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="calculators" href="../../../vllm/learning/html/calculators.html"><span class="nav-icon">◔</span><span class="nav-text">Visual calculators</span><span class="nav-done" title="Marked as studied">✓</span></a></details></aside>
+  <main class="content">
+    <div class="crumbs">SGLang <span>›</span> Architecture<label class="done-toggle"><input type="checkbox" data-done> Mark as studied</label></div>
+
+    <article class="doc"><h1 id="sglang-architecture-from-request-to-token">SGLang architecture: from request to token</h1>
+<p><a class="doc" href="index.html">Index and revision</a> | <a class="doc" href="deep-dives.html">Deep dives</a> |
+<a class="doc" href="source-labs.html">Source labs</a></p>
+<h2 id="start-here-what-happens-after-you-press-send"><a class="anchor" href="#start-here-what-happens-after-you-press-send" aria-label="Link to section">#</a>Start here: what happens after you press Send?</h2>
+<p>SGLang has to do more than call a neural network. It must remember <strong>who asked</strong>,
+decide <strong>whose work runs next</strong>, keep <strong>useful model state</strong>, and deliver an
+answer without mixing requests.</p>
+<blockquote>
+<p>The simplest mental model: receive a request, run a model step, save its
+progress, and repeat until the request is finished.</p>
+</blockquote>
+<p>On your first read, ignore distributed execution, speculative decoding, and
+specialized caches. Follow <strong>one request on one GPU</strong>. The full source reference
+is folded below for your second pass.</p>
+<h3 id="watch-two-tokens-being-generated"><a class="anchor" href="#watch-two-tokens-being-generated" aria-label="Link to section">#</a>Watch two tokens being generated</h3>
+<p>Suppose the prompt has three tokens, which we will call <code>P0</code>, <code>P1</code>, and <code>P2</code>.
+Suppose the model then chooses <code>A</code>, followed by <code>B</code>, and the request stops after
+those two output tokens. These are teaching symbols, not real tokenizer output
+or a prediction from a particular model.</p>
+<figure class="diagram"><div class="diagram-canvas" role="img" aria-label="Read the prompt once, then continue one token at a time" tabindex="0"></div><pre class="mermaid-source" hidden>flowchart TB
+    accTitle: Read the prompt once, then continue one token at a time
+    accDescr: Prefill consumes the three prompt tokens and predicts A; decode consumes A with saved context and predicts B.
+    Prompt[&quot;Prompt: P0, P1, P2&quot;] --&gt; Prefill[&quot;PREFILL: process the prompt&quot;]
+    Prefill --&gt; A[&quot;Choose and return A&quot;]
+    Prefill --&gt; Memory[(&quot;Save prompt attention state: KV cache&quot;)]
+    A --&gt; Decode[&quot;DECODE: process A as the next input&quot;]
+    Memory --&gt;|reuse earlier work| Decode
+    Decode --&gt; B[&quot;Choose and return B; output limit reached&quot;]</pre><figcaption><span class="diagram-caption">Read the prompt once, then continue one token at a time</span><span class="diagram-actions"><button type="button" class="diagram-zoom">⤢ Expand</button><button type="button" class="diagram-src">‹/› Source</button></span></figcaption></figure>
+<p><strong>Prefill</strong> means processing the prompt. <strong>Decode</strong> means continuing generation
+using saved context. The <strong>KV cache</strong> is saved attention state for earlier
+positions, not a cache of finished text answers.</p>
+<div class="table-wrap"><table><thead><tr><th>Model step</th><th>New input processed</th><th>Saved attention state afterward</th><th>Newly chosen output</th></tr></thead><tbody><tr><td>Prefill</td><td><code>P0, P1, P2</code></td><td>State for <code>P0, P1, P2</code></td><td><code>A</code></td></tr><tr><td>First decode step</td><td><code>A</code></td><td>State for <code>P0, P1, P2, A</code></td><td><code>B</code></td></tr></tbody></table></div>
+<p>Notice the one-step offset: choosing <code>B</code> does <strong>not</strong> mean the model has already
+processed <code>B</code> as an input. That happens only if generation continues.</p>
+<h3 id="give-each-job-a-name"><a class="anchor" href="#give-each-job-a-name" aria-label="Link to section">#</a>Give each job a name</h3>
+<p>Do not memorize every class. Start with these four jobs and follow one request
+through them:</p>
+<div class="table-wrap"><table><thead><tr><th>Job in plain language</th><th>Why it exists</th><th>SGLang code name</th></tr></thead><tbody><tr><td>Receive input and keep the response waiting</td><td>The client must not block every other request</td><td><a class="src" href="../../python/sglang/srt/managers/tokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/tokenizer_manager.py">TokenizerManager</a></td></tr><tr><td>Decide the next batch of work</td><td>Requests compete for computation and memory</td><td><a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py">Scheduler</a></td></tr><tr><td>Prepare tensors and run the model</td><td>The GPU needs token positions, state locations, and model inputs</td><td><a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py">TP worker</a> and <a class="src" href="../../python/sglang/srt/model_executor/model_runner.py" title="Local source: sglang/python/sglang/srt/model_executor/model_runner.py">ModelRunner</a></td></tr><tr><td>Turn output tokens into a response</td><td>Model token IDs are not yet streamed text</td><td><a class="src" href="../../python/sglang/srt/managers/detokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/detokenizer_manager.py">DetokenizerManager</a>, then the frontend</td></tr></tbody></table></div>
+<p>Saved KV supports the middle two jobs. The scheduler decides which state may
+be reused and reserved; the selected attention path consumes the state during
+the model step.</p>
+<h3 id="why-add-scheduling-and-overlap"><a class="anchor" href="#why-add-scheduling-and-overlap" aria-label="Link to section">#</a>Why add scheduling and overlap?</h3>
+<p>Now introduce a second request. A is waiting for one next token; B has a long
+new prompt. Letting B occupy the GPU for too long can make A&#39;s stream pause.
+The scheduler limits and combines work to balance this tradeoff.</p>
+<p>Overlap solves a different problem: while the GPU computes, the CPU may have
+independent preparation or result-handling work to do. That saves idle time,
+but only if it does not overwrite state the GPU is still reading.</p>
+<p><strong>Try first:</strong> after the prefill above returns <code>A</code>, should the next forward
+receive the entire prompt again, or just the newly chosen token?</p>
+<details class="reveal"><summary>Check your understanding</summary>
+
+<p>In the ordinary cached decode path, the new input is <code>A</code>. Attention reuses the
+saved state for <code>P0, P1, P2</code>. The old context still matters; it is represented
+by cached state rather than repeated new input tokens.</p>
+<p>This does not mean the decode step reads only one token&#39;s worth of memory.
+Attention can read a large cached context.</p>
+</details>
+
+<h3 id="now-connect-the-picture-to-code"><a class="anchor" href="#now-connect-the-picture-to-code" aria-label="Link to section">#</a>Now connect the picture to code</h3>
+<p>Read only this short route on the first source pass:</p>
+<ol>
+<li><a class="src" href="../../python/sglang/srt/managers/tokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/tokenizer_manager.py"><code>TokenizerManager.generate_request</code></a>:
+find the dispatch and response-wait steps. There is no model forward here.</li>
+<li><a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py"><code>Scheduler.event_loop_normal</code></a>:
+find receive, choose batch, run, and process result.</li>
+<li><a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py"><code>TpModelWorker.forward_batch_generation</code></a>:
+find the conversion to <code>ForwardBatch</code> and the model-runner call.</li>
+</ol>
+<p>Only then open <a class="doc" href="../../../vllm/learning/html/code-first-05-batch.html">lesson 5&#39;s packed-token example</a>
+or the detailed reference below.</p>
+<p><strong>Compare with vLLM:</strong> the model still processes a prompt and then continues
+generation. The main difference is the control structure: vLLM&#39;s engine core
+turns per-request token progress into scheduler output for its workers. See
+the <a class="doc" href="../../../vllm/learning/html/vllm-architecture.html#start-here-the-same-model-work-different-control-structure">same small story in vLLM</a>.</p>
+<h2 id="optional-reference-the-complete-source-map"><a class="anchor" href="#optional-reference-the-complete-source-map" aria-label="Link to section">#</a>Optional reference: the complete source map</h2>
+<details class="reveal"><summary>Open exact source boundaries, full diagrams, and advanced paths</summary>
+
+<h2 id="1-project-mind-map"><a class="anchor" href="#1-project-mind-map" aria-label="Link to section">#</a>1. Project mind map</h2>
+<figure class="diagram is-mindmap"><div class="diagram-canvas" role="img" aria-label="1. Project mind map" tabindex="0"></div><pre class="mermaid-source" hidden>mindmap
+  root((SGLang SRT))
+    Frontend
+      HTTP and OpenAI serving
+      TokenizerManager
+      Multimodal processors
+      DetokenizerManager
+    Scheduler
+      Waiting and running requests
+      Prefill and decode plans
+      Overlap event loop
+      Result processing
+    Memory
+      Request to token mapping
+      KV slot allocator and pools
+      Radix prefix cache
+      Unified Full SWA Mamba components
+      HiCache tiers
+    Execution
+      TpModelWorker
+      ForwardBatch and ModelRunner
+      Attention backend
+      Kernels graphs and sampling
+    Scale and features
+      TP PP DP CP and EP
+      Speculation and grammar
+      LoRA
+      PD and encoder separation
+      Gateway routing</pre><figcaption><span class="diagram-caption">1. Project mind map</span><span class="diagram-actions"><button type="button" class="diagram-zoom">⤢ Expand</button><button type="button" class="diagram-src">‹/› Source</button></span></figcaption></figure>
+<h2 id="2-baseline-serving-flow"><a class="anchor" href="#2-baseline-serving-flow" aria-label="Link to section">#</a>2. Baseline serving flow</h2>
+<figure class="diagram"><div class="diagram-canvas" role="img" aria-label="2. Baseline serving flow" tabindex="0"></div><pre class="mermaid-source" hidden>flowchart LR
+    Client[&quot;Client&quot;] --&gt; HTTP[&quot;HTTP and OpenAI adapter&quot;]
+    HTTP --&gt; TM[&quot;TokenizerManager&quot;]
+    TM --&gt;|Tokenized request IPC| Scheduler[&quot;Scheduler process&quot;]
+    Scheduler &lt;--&gt; Cache[&quot;Prefix cache, allocator and pools&quot;]
+    Scheduler --&gt;|ScheduleBatch| Worker[&quot;TpModelWorker&quot;]
+    Worker --&gt;|ForwardBatch| Runner[&quot;ModelRunner&quot;]
+    Runner --&gt; Model[&quot;Model and attention backend&quot;]
+    Model --&gt; Result[&quot;Logits, sampling and batch result&quot;]
+    Result --&gt; Scheduler
+    Scheduler --&gt;|Token output IPC| Detok[&quot;DetokenizerManager&quot;]
+    Detok --&gt; TM
+    TM --&gt; HTTP
+    HTTP --&gt;|Stream| Client</pre><figcaption><span class="diagram-caption">2. Baseline serving flow</span><span class="diagram-actions"><button type="button" class="diagram-zoom">⤢ Expand</button><button type="button" class="diagram-src">‹/› Source</button></span></figcaption></figure>
+<p>This is the ordinary Python serving mental model, not a fixed process count for
+every mode. TP/PP/DP, encoder separation, multi-tokenizer, embedding, and
+alternative entrypoints change topology or bypass portions of the output path.</p>
+<p>The <a class="src" href="../../python/sglang/srt/entrypoints/engine.py" title="Local source: sglang/python/sglang/srt/entrypoints/engine.py">engine launcher</a> documents the
+baseline tokenizer/main-process, scheduler subprocess, and detokenizer subprocess
+arrangement. Inspect launch configuration before counting replicas or ranks.</p>
+<h2 id="3-request-trace-with-exact-source-entry-points"><a class="anchor" href="#3-request-trace-with-exact-source-entry-points" aria-label="Link to section">#</a>3. Request trace with exact source entry points</h2>
+<div class="table-wrap"><table><thead><tr><th>Phase</th><th>Read</th><th>What crosses the boundary</th></tr></thead><tbody><tr><td>HTTP protocol</td><td><a class="src" href="../../python/sglang/srt/entrypoints/http_server.py" title="Local source: sglang/python/sglang/srt/entrypoints/http_server.py">HTTP server</a>, <a class="src" href="../../python/sglang/srt/entrypoints/openai/serving_chat.py" title="Local source: sglang/python/sglang/srt/entrypoints/openai/serving_chat.py">OpenAI chat adapter</a></td><td>HTTP body -&gt; internal generation request</td></tr><tr><td>Normalize/tokenize</td><td><a class="src" href="../../python/sglang/srt/managers/tokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/tokenizer_manager.py">Tokenizer manager</a>, <code>TokenizerManager.generate_request</code></td><td>Normalized input -&gt; tokenized request and per-request state</td></tr><tr><td>IPC schema</td><td><a class="src" href="../../python/sglang/srt/managers/io_struct.py" title="Local source: sglang/python/sglang/srt/managers/io_struct.py">IO structures</a></td><td>Request IDs, token/media/sampling data, control/output messages</td></tr><tr><td>Scheduling</td><td><a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py">Scheduler</a>, <code>get_next_batch_to_run</code></td><td>Waiting/running state -&gt; next-batch plan</td></tr><tr><td>Batch representation</td><td><a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py">Schedule batch</a>, <code>Req</code>, <code>ScheduleBatch</code></td><td>Request-local and scheduler-owned state</td></tr><tr><td>Worker boundary</td><td><a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py">TP worker</a>, <code>forward_batch_generation</code></td><td><code>ScheduleBatch</code> -&gt; <code>ForwardBatch</code></td></tr><tr><td>Forward metadata</td><td><a class="src" href="../../python/sglang/srt/model_executor/forward_batch_info.py" title="Local source: sglang/python/sglang/srt/model_executor/forward_batch_info.py">Forward batch</a>, <code>ForwardBatch.init_new</code></td><td>Flattened inputs, positions, cache locations and execution metadata</td></tr><tr><td>Model execution</td><td><a class="src" href="../../python/sglang/srt/model_executor/model_runner.py" title="Local source: sglang/python/sglang/srt/model_executor/model_runner.py">Model runner</a>, <code>forward</code></td><td>Device inputs -&gt; logits/hidden results and execution metadata</td></tr><tr><td>Attention</td><td><a class="src" href="../../python/sglang/srt/layers/radix_attention.py" title="Local source: sglang/python/sglang/srt/layers/radix_attention.py">RadixAttention layer</a>, <a class="src is-dir" href="../../python/sglang/srt/layers/attention" title="Local source: sglang/python/sglang/srt/layers/attention">backends</a></td><td>Q/K/V plus forward/cache metadata -&gt; attention output</td></tr><tr><td>Result/streaming</td><td><a class="src" href="../../python/sglang/srt/managers/scheduler_components/batch_result_processor.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py">Batch result processor</a>, <a class="src" href="../../python/sglang/srt/managers/scheduler_components/output_streamer.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/output_streamer.py">output streamer</a></td><td>Sampled/accepted tokens -&gt; request updates and output messages</td></tr><tr><td>Detokenize</td><td><a class="src" href="../../python/sglang/srt/managers/detokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/detokenizer_manager.py">Detokenizer</a> and tokenizer manager</td><td>Token updates -&gt; response chunks</td></tr></tbody></table></div>
+<p>Do not equate the <code>RadixAttention</code> layer with the radix-tree implementation.
+The layer is an attention execution interface; prefix lookup and ownership are
+cache/scheduler concerns.</p>
+<h2 id="4-tokenizermanager-is-more-than-tokenization"><a class="anchor" href="#4-tokenizermanager-is-more-than-tokenization" aria-label="Link to section">#</a>4. TokenizerManager is more than tokenization</h2>
+<p>In the inspected <code>generate_request</code> path:</p>
+<ol>
+<li>Ensure the output-handling loop is active.</li>
+<li>Normalize batch arguments, priority, and request state.</li>
+<li>Respect pause/update synchronization and validate/resolve LoRA.</li>
+<li>Tokenize/process and dispatch the request.</li>
+<li>Await response updates and yield them to the caller.</li>
+<li>On failure, distinguish states never dispatched from requests that require
+scheduler-side abort/cleanup.</li>
+</ol>
+<p>That last distinction prevents frontend validation failures from leaking
+request state while avoiding silent abandonment of already-dispatched work.
+An async generator completing is not, by itself, proof that every GPU resource
+has been reclaimed.</p>
+<h2 id="5-normal-loop-versus-overlap-loop"><a class="anchor" href="#5-normal-loop-versus-overlap-loop" aria-label="Link to section">#</a>5. Normal loop versus overlap loop</h2>
+<p>Read the two loops in <a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py">scheduler</a>.</p>
+<p>The normal loop is approximately:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">ingest -&gt; get next plan -&gt; run batch -&gt; process result -&gt; repeat</code></pre></div>
+<p>The overlap loop allows CPU work and device work to overlap. It keeps a result
+queue, can process the previous batch while the current forward is outstanding,
+and has explicit cases where overlap is disabled.</p>
+<p>Important details in this checkout:</p>
+<ul>
+<li><code>get_next_batch_to_run</code> returns a plan carrying both the batch to execute and
+the resulting running-batch state.</li>
+<li>Completed prefill work can merge into the running decode batch; partially
+chunked requests need separate treatment.</li>
+<li><code>run_batch</code> coordinates schedule/forward streams and forward-state isolation.</li>
+<li>A write-after-read barrier protects shared data before result processing
+mutates it.</li>
+<li>Some sampling depends on the previous result, such as grammar advancement,
+and is ordered accordingly.</li>
+</ul>
+<div class="callout invariant"><div class="callout-label">Invariant</div><p>CPU preparation must not overwrite host/device metadata that an
+in-flight forward is still reading. &quot;Asynchronous&quot; is not a license to remove
+barriers. Measure the critical path before changing synchronization.</p></div>
+<p>The specialized PD and PP loops are separate paths. Understand the baseline
+before following them; do not assume every feature composes with overlap.</p>
+<h2 id="6-memory-ownership-is-layered"><a class="anchor" href="#6-memory-ownership-is-layered" aria-label="Link to section">#</a>6. Memory ownership is layered</h2>
+<p>Start with <a class="src" href="../../python/sglang/srt/mem_cache/README.md" title="Local source: sglang/python/sglang/srt/mem_cache/README.md">memory subsystem overview</a>,
+then verify actual file locations in this revision.</p>
+<div class="table-wrap"><table><thead><tr><th>Layer</th><th>Responsibility</th><th>Source</th></tr></thead><tbody><tr><td>Request mapping</td><td>Map request positions to cache locations</td><td><a class="src" href="../../python/sglang/srt/mem_cache/memory_pool.py" title="Local source: sglang/python/sglang/srt/mem_cache/memory_pool.py">Memory pools</a>, <code>ReqToTokenPool</code></td></tr><tr><td>Allocation policy</td><td>Calculate per-batch needs and output cache locations</td><td><a class="src" href="../../python/sglang/srt/mem_cache/allocation.py" title="Local source: sglang/python/sglang/srt/mem_cache/allocation.py">Allocation</a></td></tr><tr><td>Slot allocator</td><td>Hand out/reclaim indices under pool rules</td><td><a class="src is-dir" href="../../python/sglang/srt/mem_cache/allocator" title="Local source: sglang/python/sglang/srt/mem_cache/allocator">Allocators</a></td></tr><tr><td>Device backing</td><td>Store K/V or recurrent state in concrete layouts</td><td><a class="src" href="../../python/sglang/srt/mem_cache/memory_pool.py" title="Local source: sglang/python/sglang/srt/mem_cache/memory_pool.py">Memory pools</a>, <a class="src is-dir" href="../../python/sglang/srt/mem_cache/hybrid_cache" title="Local source: sglang/python/sglang/srt/mem_cache/hybrid_cache">hybrid pools</a></td></tr><tr><td>Prefix index</td><td>Find reusable state and determine eviction eligibility</td><td><a class="src" href="../../python/sglang/srt/mem_cache/radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/radix_cache.py">Radix cache</a>, <a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py">unified cache</a></td></tr><tr><td>Host/storage tier</td><td>Move and retain reusable state outside device memory</td><td><a class="src is-dir" href="../../python/sglang/srt/mem_cache/pool_host" title="Local source: sglang/python/sglang/srt/mem_cache/pool_host">Host pools</a>, <a class="src is-dir" href="../../python/sglang/srt/mem_cache/storage" title="Local source: sglang/python/sglang/srt/mem_cache/storage">storage</a></td></tr></tbody></table></div>
+<p>The overview includes intended organizational structure. In the inspected tree,
+many device pool classes still live in the large memory-pool module; do not
+assume every planned directory move has already happened.</p>
+<h2 id="7-configuration-is-part-of-reproducibility"><a class="anchor" href="#7-configuration-is-part-of-reproducibility" aria-label="Link to section">#</a>7. Configuration is part of reproducibility</h2>
+<p>The inspected <a class="src" href="../../python/sglang/srt/runtime_context.py" title="Local source: sglang/python/sglang/srt/runtime_context.py">runtime context</a> separates:</p>
+<ul>
+<li>raw startup configuration for provenance;</li>
+<li>published resolved namespace bags;</li>
+<li>runtime flags;</li>
+<li>resources such as streams and buffers;</li>
+<li>per-forward state;</li>
+<li>configured topology and live parallel groups.</li>
+</ul>
+<p>The launcher performs resolution and publishes the tokenizer role before
+runtime consumers read resolved bags. Other process entries establish their
+own process-local context. Changing a parent process&#39;s bag is not a distributed
+configuration broadcast.</p>
+<p>For debugging, record <strong>effective configuration</strong>, model revision, selected
+backend, and rank topology. The raw command line alone may miss model- or
+hardware-driven resolution. A value specific to a draft runner is also not
+necessarily the target runner&#39;s resolved value.</p>
+<h2 id="8-where-the-scope-expands"><a class="anchor" href="#8-where-the-scope-expands" aria-label="Link to section">#</a>8. Where the scope expands</h2>
+<ul>
+<li><a class="src is-dir" href="../../python/sglang/srt/multimodal/processors" title="Local source: sglang/python/sglang/srt/multimodal/processors">Multimodal processors</a> add media
+processing and feature/position alignment.</li>
+<li><a class="src is-dir" href="../../python/sglang/srt/disaggregation" title="Local source: sglang/python/sglang/srt/disaggregation">Disaggregation</a> adds transfer, readiness,
+and ownership state machines.</li>
+<li><a class="src is-dir" href="../../python/sglang/srt/speculative" title="Local source: sglang/python/sglang/srt/speculative">Speculative execution</a> changes proposal,
+verification, accepted-token, and cache lifetimes.</li>
+<li><a class="src is-dir" href="../../python/sglang/srt/lora" title="Local source: sglang/python/sglang/srt/lora">LoRA</a> adds adapter residency and execution state.</li>
+<li><a class="src is-dir" href="../../python/sglang/srt/distributed" title="Local source: sglang/python/sglang/srt/distributed">Distributed layers</a> and
+<a class="src is-dir" href="../../python/sglang/srt/layers/moe" title="Local source: sglang/python/sglang/srt/layers/moe">MoE layers</a> add collective ordering.</li>
+</ul>
+<p>All of these still need explicit owners, state transitions, and cleanup.
+The <a class="doc" href="deep-dives.html">deep dives</a> explain the most important invariants.</p>
+</details>
+
+<div class="callout next"><div class="callout-label">Next step</div><p><a class="doc" href="deep-dives.html">SGLang implementation deep dives</a>.</p></div>
+</article>
+    <nav class="pager"><a class="pager-prev" href="../../../vllm/learning/html/vllm-source-labs.html"><span>← Previous</span><strong>vLLM: Source labs</strong></a><a class="pager-next" href="deep-dives.html"><span>Next →</span><strong>SGLang: Deep dives</strong></a></nav>
+    <footer class="site-foot">Generated from the Markdown sources in <code>sglang/learning/architecture.md</code>. Rebuild with <code>npm run build</code> in <code>vllm/learning/html-src</code>.</footer>
+  </main>
+  <nav class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-link d2" href="#start-here-what-happens-after-you-press-send">Start here: what happens after you press Send?</a><a class="toc-link d3" href="#watch-two-tokens-being-generated">Watch two tokens being generated</a><a class="toc-link d3" href="#give-each-job-a-name">Give each job a name</a><a class="toc-link d3" href="#why-add-scheduling-and-overlap">Why add scheduling and overlap?</a><a class="toc-link d3" href="#now-connect-the-picture-to-code">Now connect the picture to code</a><a class="toc-link d2" href="#optional-reference-the-complete-source-map">Optional reference: the complete source map</a><a class="toc-link d2" href="#1-project-mind-map">1. Project mind map</a><a class="toc-link d2" href="#2-baseline-serving-flow">2. Baseline serving flow</a><a class="toc-link d2" href="#3-request-trace-with-exact-source-entry-points">3. Request trace with exact source entry points</a><a class="toc-link d2" href="#4-tokenizermanager-is-more-than-tokenization">4. TokenizerManager is more than tokenization</a><a class="toc-link d2" href="#5-normal-loop-versus-overlap-loop">5. Normal loop versus overlap loop</a><a class="toc-link d2" href="#6-memory-ownership-is-layered">6. Memory ownership is layered</a><a class="toc-link d2" href="#7-configuration-is-part-of-reproducibility">7. Configuration is part of reproducibility</a><a class="toc-link d2" href="#8-where-the-scope-expands">8. Where the scope expands</a></nav>
+</div>
+<div class="modal" hidden><div class="modal-bar"><span class="modal-title">Diagram</span><span class="modal-hint">Scroll to zoom · drag to pan</span><button type="button" class="modal-close" aria-label="Close">✕</button></div><div class="modal-stage"></div></div>
+
+<script src="../../../vllm/learning/html/assets/search-index.js"></script>
+<script src="../../../vllm/learning/html/assets/vendor/mermaid.min.js"></script>
+<script src="../../../vllm/learning/html/assets/charts.js"></script>
+<script src="../../../vllm/learning/html/assets/widgets.js"></script>
+<script src="../../../vllm/learning/html/assets/mindmap.js"></script>
+<script src="../../../vllm/learning/html/assets/site.js"></script>
+</body>
+</html>

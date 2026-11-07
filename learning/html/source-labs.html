@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source labs · SGLang</title>
+<link rel="stylesheet" href="../../../vllm/learning/html/assets/site.css">
+<script>try{const t=localStorage.getItem("learn-theme");if(t)document.documentElement.dataset.theme=t;else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.dataset.theme="dark";}catch(e){}</script>
+</head>
+<body data-page="sglang-labs" data-root="../../..">
+<header class="topbar">
+  <button type="button" class="menu-btn" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="../../../vllm/learning/html/index.html"><span class="brand-mark">⟁</span> Inference Engineering</a>
+  <div class="search"><input type="search" placeholder="Search all lessons…  ( / )" aria-label="Search lessons"><div class="search-results" hidden></div></div>
+  <button type="button" class="theme-btn" aria-label="Toggle dark mode">◐</button>
+</header>
+<div class="layout">
+  <aside class="sidebar"><details class="nav-group" open><summary class="nav-title">Orientation</summary><a class="nav-link" data-page="home" href="../../../vllm/learning/html/index.html"><span class="nav-icon">◆</span><span class="nav-text">Library home</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="mindmap" href="../../../vllm/learning/html/00-mindmap.html"><span class="nav-icon">✶</span><span class="nav-text">Master mind map</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-home" href="index.html"><span class="nav-icon">◇</span><span class="nav-text">SGLang track</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Code-first course</summary><a class="nav-link" data-page="code-course" href="../../../vllm/learning/html/code-first.html"><span class="nav-icon">></span><span class="nav-text">Course & study method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-01" href="../../../vllm/learning/html/code-first-01-request.html"><span class="nav-icon">01</span><span class="nav-text">Request ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-02" href="../../../vllm/learning/html/code-first-02-model.html"><span class="nav-icon">02</span><span class="nav-text">Model forward</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-03" href="../../../vllm/learning/html/code-first-03-cache.html"><span class="nav-icon">03</span><span class="nav-text">KV ownership</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-04" href="../../../vllm/learning/html/code-first-04-scheduler.html"><span class="nav-icon">04</span><span class="nav-text">Scheduling</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-05" href="../../../vllm/learning/html/code-first-05-batch.html"><span class="nav-icon">05</span><span class="nav-text">Batch inputs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-06" href="../../../vllm/learning/html/code-first-06-output.html"><span class="nav-icon">06</span><span class="nav-text">Sampling & lifetime</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-07" href="../../../vllm/learning/html/code-first-07-execution.html"><span class="nav-icon">07</span><span class="nav-text">Overlap & graphs</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-08" href="../../../vllm/learning/html/code-first-08-parallel.html"><span class="nav-icon">08</span><span class="nav-text">Tensor parallelism</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-09" href="../../../vllm/learning/html/code-first-09-speculation.html"><span class="nav-icon">09</span><span class="nav-text">Speculative commit</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-10" href="../../../vllm/learning/html/code-first-10-multimodal.html"><span class="nav-icon">10</span><span class="nav-text">Multimodal state</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-11" href="../../../vllm/learning/html/code-first-11-tests.html"><span class="nav-icon">11</span><span class="nav-text">Read the tests</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="code-12" href="../../../vllm/learning/html/code-first-12-contribution.html"><span class="nav-icon">12</span><span class="nav-text">Make a contribution</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Theory</summary><a class="nav-link" data-page="foundations" href="../../../vllm/learning/html/01-foundations.html"><span class="nav-icon">∑</span><span class="nav-text">Foundations</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="systems" href="../../../vllm/learning/html/02-systems-design.html"><span class="nav-icon">⧉</span><span class="nav-text">Systems design</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">vLLM</summary><a class="nav-link" data-page="vllm-arch" href="../../../vllm/learning/html/vllm-architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-deep" href="../../../vllm/learning/html/vllm-deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="vllm-labs" href="../../../vllm/learning/html/vllm-source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group" open><summary class="nav-title">SGLang</summary><a class="nav-link" data-page="sglang-arch" href="architecture.html"><span class="nav-icon">▤</span><span class="nav-text">Architecture</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="sglang-deep" href="deep-dives.html"><span class="nav-icon">⌕</span><span class="nav-text">Deep dives</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link active" data-page="sglang-labs" href="source-labs.html"><span class="nav-icon">⚗</span><span class="nav-text">Source labs</span><span class="nav-done" title="Marked as studied">✓</span></a></details><details class="nav-group"><summary class="nav-title">Practice & reference</summary><a class="nav-link" data-page="roadmap" href="../../../vllm/learning/html/03-roadmap-and-labs.html"><span class="nav-icon">⇢</span><span class="nav-text">Roadmap & method</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="compare" href="../../../vllm/learning/html/04-comparison-and-reading.html"><span class="nav-icon">⇄</span><span class="nav-text">Compare & read</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="frontiers" href="../../../vllm/learning/html/05-current-frontiers.html"><span class="nav-icon">+</span><span class="nav-text">Current frontiers</span><span class="nav-done" title="Marked as studied">✓</span></a><a class="nav-link" data-page="calculators" href="../../../vllm/learning/html/calculators.html"><span class="nav-icon">◔</span><span class="nav-text">Visual calculators</span><span class="nav-done" title="Marked as studied">✓</span></a></details></aside>
+  <main class="content">
+    <div class="crumbs">SGLang <span>›</span> Source labs<label class="done-toggle"><input type="checkbox" data-done> Mark as studied</label></div>
+
+    <article class="doc"><h1 id="sglang-source-labs">SGLang source labs</h1>
+<p><a class="doc" href="architecture.html">Architecture</a> | <a class="doc" href="deep-dives.html">Deep dives</a> |
+<a class="doc" href="../../../vllm/learning/html/03-roadmap-and-labs.html">Shared measurement protocol</a></p>
+<div class="callout note"><div class="callout-label">Status</div><p>source exercises and proposed experiments; no GPU lab results are
+claimed. Use an isolated supported Linux environment for execution, not the
+Windows source-reading host.</p></div>
+<h2 id="guided-lab-two-requests-one-reusable-prefix"><a class="anchor" href="#guided-lab-two-requests-one-reusable-prefix" aria-label="Link to section">#</a>Guided lab: two requests, one reusable prefix</h2>
+<p><strong>Goal:</strong> explain why B computes eight new prompt positions without requiring
+A to stay alive. Read the <a class="doc" href="deep-dives.html#a-worked-two-request-story">worked story</a>
+after making your predictions. This is a second pass through the existing
+course, not a new prerequisite course.</p>
+<p>Use the same token-ID workload: cold A has <code>P0..P19</code>, finishes, then B has
+<code>P0..P11, U12..U19</code> with <code>U12 != P12</code>. Each greedily produces exactly two output
+tokens without an earlier stop. Use the story&#39;s dense text-only, device-only,
+FULL-cache assumptions, identical namespace, no intervening eviction, and
+enough capacity/chunk budget for B&#39;s eight new inputs. Page size 4 is a paper
+geometry, <strong>not</strong> a server command-line recommendation.</p>
+<h3 id="1-predict-before-locating-the-implementation"><a class="anchor" href="#1-predict-before-locating-the-implementation" aria-label="Link to section">#</a>1. Predict before locating the implementation</h3>
+<p>Fill this worksheet with values and a reason. Keep <em>chosen output tokens</em>,
+<em>computed KV positions</em>, and <em>retained cache positions</em> in separate columns.</p>
+<div class="table-wrap"><table><thead><tr><th>Prediction</th><th>Your value and reason</th></tr></thead><tbody><tr><td>A&#39;s newly computed prompt positions</td><td></td></tr><tr><td>B&#39;s equal leading token IDs / request lookup cap / page-aligned lookup length</td><td></td></tr><tr><td>B&#39;s actual reusable prefix / new prompt work</td><td></td></tr><tr><td>B&#39;s <code>prefix_lens</code>, <code>extend_lens</code>, <code>seq_lens</code>, and position range</td><td></td></tr><tr><td>Computed KV positions just after the first output is chosen</td><td></td></tr><tr><td>Computed KV positions after feeding that output and choosing the second</td><td></td></tr><tr><td>Retained page-aligned positions after A finishes</td><td></td></tr><tr><td>Shared-prefix request holders after A / after B admission / after B finishes</td><td></td></tr><tr><td>Distinct retained prompt positions after both finish, with no eviction</td><td></td></tr><tr><td>If B&#39;s whole prompt were identical, would new prompt work be zero?</td><td></td></tr></tbody></table></div>
+<h3 id="2-locate-the-boundaries-on-windows-reading-only"><a class="anchor" href="#2-locate-the-boundaries-on-windows-reading-only" aria-label="Link to section">#</a>2. Locate the boundaries on Windows (reading only)</h3>
+<p>No engine imports, model downloads, or CUDA installation are needed to read.
+From this checkout, these commands only locate source:</p>
+<div class="codeblock"><div class="codebar"><span>powershell</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-powershell">Set-Location C:\Users\yow\Documents\Workspace\sglang
+rg -n 'def (init_next_round_input|_compute_max_prefix_len|prepare_for_extend|prepare_for_decode)' python\sglang\srt\managers\schedule_batch.py
+rg -n 'def (match_kv_cache|checkpoint_kv_cache|release_kv_cache)' python\sglang\srt\mem_cache\common.py
+rg -n 'def (match_prefix|checkpoint_into_tree|lock|unlock)' python\sglang\srt\mem_cache\unified_radix_cache.py</code></pre></div>
+<p>Follow this short reading route; record one invariant at each boundary:</p>
+<ol>
+<li><strong>Select the implementation.</strong>
+<a class="src" href="../../python/sglang/srt/mem_cache/registry.py" title="Local source: sglang/python/sglang/srt/mem_cache/registry.py"><code>default_radix_cache_factory</code> / <code>create_unified_radix_cache</code></a>
+select the built-in FULL-only unified controller for this dense case.
+<a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/tree_core_registry.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/tree_core_registry.py"><code>select_tree_core_backend</code></a>
+is a separate selection. The lab follows the Python core explicitly selected
+by the existing test fixture, not a claim about all deployed defaults.</li>
+<li><strong>Match, then protect.</strong>
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>Req.init_next_round_input</code></a>
+calls <a class="src" href="../../python/sglang/srt/mem_cache/common.py" title="Local source: sglang/python/sglang/srt/mem_cache/common.py"><code>match_kv_cache</code></a>.
+Inspect <a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/unified_tree_core.py"><code>UnifiedTreeCore.match_prefix</code> / <code>_split_node</code></a>
+and <a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/full.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/full.py"><code>FullComponent.redistribute_on_node_split</code></a>.
+What is cloned: K/V tensors or tensors of their location indices?</li>
+<li><strong>Admit, then allocate.</strong>
+In <a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py"><code>Scheduler._get_new_batch_prefill_raw</code></a>
+and <a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py"><code>PrefillAdder.add_one_req</code></a>,
+find request-slot checks, the temporary <code>_lock_node</code>, budget selection, and
+<code>_commit_prefill_admission</code>. Why must the selected prefix cease being
+evictable before capacity is checked? Locate the chunk branch that would
+invalidate our one-step assumption if the budget were smaller.</li>
+<li><strong>Translate the plan.</strong>
+Follow <a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py"><code>ScheduleBatch.prepare_for_extend</code></a>
+through <a class="src" href="../../python/sglang/srt/mem_cache/allocation.py" title="Local source: sglang/python/sglang/srt/mem_cache/allocation.py"><code>alloc_for_extend</code> / <code>write_cache_indices</code></a>,
+<a class="src" href="../../python/sglang/srt/managers/overlap_utils.py" title="Local source: sglang/python/sglang/srt/managers/overlap_utils.py"><code>resolve_forward_inputs</code></a>,
+and <a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py"><code>TpModelWorker.forward_batch_generation</code></a>
+to <a class="src" href="../../python/sglang/srt/model_executor/forward_batch_info.py" title="Local source: sglang/python/sglang/srt/model_executor/forward_batch_info.py"><code>ForwardBatch.init_new</code> / <code>compute_position_torch</code></a>.
+Distinguish staged <code>prefill_input_ids_cpu</code> from materialized <code>input_ids</code>.
+Show why eight input IDs need a row describing twenty context positions.
+Do not insert the removed <code>ModelWorkerBatch</code> representation into this trace.</li>
+<li><strong>Finish without destroying reuse.</strong>
+Follow <a class="src" href="../../python/sglang/srt/managers/scheduler_components/batch_result_processor.py" title="Local source: sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py"><code>SchedulerBatchResultProcessor.process_batch_result_prefill</code> / <code>process_batch_result_decode</code></a>
+to <a class="src" href="../../python/sglang/srt/mem_cache/common.py" title="Local source: sglang/python/sglang/srt/mem_cache/common.py"><code>release_kv_cache</code></a>
+and <a class="src" href="../../python/sglang/srt/mem_cache/unified_radix_cache.py" title="Local source: sglang/python/sglang/srt/mem_cache/unified_radix_cache.py"><code>UnifiedRadixCache.checkpoint_into_tree</code></a>.
+Mark the separate operations: publish eligible KV, free the private tail,
+unlock the prefix, release the request row. Which operation actually evicts
+the retained prefix later?</li>
+</ol>
+<h3 id="3-inspect-existing-tests-not-a-hand-written-mock-transcript"><a class="anchor" href="#3-inspect-existing-tests-not-a-hand-written-mock-transcript" aria-label="Link to section">#</a>3. Inspect existing tests, not a hand-written mock transcript</h3>
+<p>Open <a class="src" href="../../test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py" title="Local source: sglang/test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py">the unified cache suite</a>.
+Read <code>CacheConfig</code>, <code>build_fixture</code>, <code>_TREE_CORE_TEST_BACKEND</code>, <code>UnifiedRadixCacheSuite</code>,
+and the <code>_CONFIGS</code> / <code>globals()[_name]</code> class-generation loop. It generates the
+real selector <strong><code>Test_FULL_ps64</code></strong>. Its page size 64 is an existing fixture
+geometry; translate the paper example into pages rather than changing the test.
+The FULL fixture uses real pools and a <code>TokenToKVPoolAllocator</code>, not a launched
+language model or a complete serving scheduler.</p>
+<div class="table-wrap"><table><thead><tr><th>Method inherited by <code>Test_FULL_ps64</code></th><th>Observable contract to explain</th></tr></thead><tbody><tr><td><code>test_shared_prefix_split</code></td><td>Both branches remain matchable, while a third suffix matches only the common prefix; <code>sanity_check()</code> holds</td></tr><tr><td><code>test_evict_respects_lock_ref</code></td><td>A protected prefix still matches after attempted eviction; releasing its receipt permits later eviction</td></tr><tr><td><code>test_paged_page_boundary_mismatch</code></td><td>A mismatch in page two leaves one matching page; a mismatch in page one leaves none</td></tr><tr><td><code>test_paged_checkpoint_unaligned_tail_freed</code></td><td>Finishing restores allocator capacity for the unretained tail while the aligned prefix still matches</td></tr></tbody></table></div>
+<p>Inspect the last method&#39;s allocator setup before interpreting its
+<code>available_size()</code> assertion: this fixture measures token-slot capacity, not
+the physical-page reclamation of every production allocator. Also, these
+direct cache tests do <strong>not</strong> exercise <code>Req._compute_max_prefix_len</code>; a
+full-key cache match and a request&#39;s capped lookup are different operations.</p>
+<h3 id="4-explain-before-trying-to-execute"><a class="anchor" href="#4-explain-before-trying-to-execute" aria-label="Link to section">#</a>4. Explain before trying to execute</h3>
+<p>Write four sentences, each backed by a symbol above:</p>
+<ul>
+<li>B&#39;s hit preserves the same physical prefix locations despite a tree split.</li>
+<li>B cannot count its required prefix as evictable admission capacity.</li>
+<li><code>prefix_len + extend_len</code> explains the context length, not the input tensor length.</li>
+<li>A finished request can release its row and lock while its zero-user prefix
+remains reusable; only later eviction reclaims that retained state.</li>
+</ul>
+<p><strong>Pass gate:</strong> reject a wrong implementation by a wrong match length, invalid
+location mapping, premature eviction, or missing capacity recovery—not merely
+because a mock&#39;s method was or was not called. The existing tests establish
+component contracts, not an executed end-to-end A/B inference result.</p>
+<details class="reveal"><summary>Small answer key</summary>
+
+<ul>
+<li>A computes 20 prompt positions. B has 12 equal leading IDs; the request cap
+is 19, page-aligned to 16, and divergence leaves an actual 12-position hit.
+B therefore computes eight new prompt positions.</li>
+<li>B&#39;s lists are <code>[12]</code>, <code>[8]</code>, <code>[20]</code>; its new positions are <code>12..19</code>.
+Twenty-position context does not mean twenty new model inputs.</li>
+<li>After choosing the first output, useful KV covers 20 positions. Feeding
+that output in the next step makes 21. The second chosen output has no
+computed KV in this ordinary completed-step ledger.</li>
+<li>Page size 4 retains 20 prompt positions after A; after both, the no-eviction
+union is <code>12 + 8 + 8 = 28</code>. Stable request-holder counts on the shared path
+are <code>0 -&gt; 1 -&gt; 0</code>, not simultaneous A/B ownership.</li>
+<li>For an entirely identical 20-token B, the request cap and page alignment
+permit 16 reused positions, leaving four to recompute.</li>
+</ul>
+</details>
+
+<p><strong>Optional, unrun:</strong> in an already prepared, isolated, supported <strong>Linux CUDA
+development environment</strong>, from the SGLang root, select only these existing
+methods:</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-bash">python3 test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py \
+  Test_FULL_ps64.test_shared_prefix_split \
+  Test_FULL_ps64.test_evict_respects_lock_ref \
+  Test_FULL_ps64.test_paged_page_boundary_mismatch \
+  Test_FULL_ps64.test_paged_checkpoint_unaligned_tail_freed</code></pre></div>
+<p>Follow <a class="src" href="../../test/README.md" title="Local source: sglang/test/README.md">test/README.md</a>, not an ad-hoc dependency installation.
+Despite its <code>unit</code> directory, this file registers accelerator CI and its fixture
+allocates device pools via <code>get_device()</code>. Do not treat it as a dependency-free
+Windows/CPU exercise. <strong>This command has not been run for this learning material.</strong>
+If you run it, save revision, selected fixture, environment, and actual results.</p>
+<h2 id="lab-s0-trace-three-representations-of-one-request"><a class="anchor" href="#lab-s0-trace-three-representations-of-one-request" aria-label="Link to section">#</a>Lab S0: trace three representations of one request</h2>
+<p>Read <a class="src" href="../../python/sglang/srt/managers/tokenizer_manager.py" title="Local source: sglang/python/sglang/srt/managers/tokenizer_manager.py">TokenizerManager</a>,
+<a class="src" href="../../python/sglang/srt/managers/schedule_batch.py" title="Local source: sglang/python/sglang/srt/managers/schedule_batch.py">scheduler batch structures</a>,
+<a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py">TP worker</a>, and
+<a class="src" href="../../python/sglang/srt/model_executor/forward_batch_info.py" title="Local source: sglang/python/sglang/srt/model_executor/forward_batch_info.py">ForwardBatch</a>.</p>
+<p>Map:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">API/internal request -&gt; tokenized IPC request -&gt; Req
+                     -&gt; ScheduleBatch -&gt; ForwardBatch</code></pre></div>
+<p>For a 20-token prompt with a reusable 12-token prefix, identify where each
+representation records logical length, new work, cache locations, and request
+identity. Choose a page size consistent with that illustrative hit, and account
+for the final-token/logit behavior of the selected path.</p>
+<p>Also trace an over-context input rejected before dispatch. Locate the
+frontend failure cleanup and explain why no scheduler abort is necessary for a
+request that never reached it.</p>
+<p>Windows source-navigation examples from the SGLang root:</p>
+<div class="codeblock"><div class="codebar"><span>powershell</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-powershell">rg -n 'async def generate_request|_release_req_states_on_failure' python\sglang\srt\managers\tokenizer_manager.py
+rg -n 'def (event_loop_normal|event_loop_overlap|get_next_batch_to_run|run_batch)' python\sglang\srt\managers\scheduler.py
+rg -n 'def forward_batch_generation|ForwardBatch.init_new' python\sglang\srt\managers\tp_worker.py</code></pre></div>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> explain which owner can mutate each representation and when.</p></div>
+<h2 id="lab-s1-branch-lock-and-evict"><a class="anchor" href="#lab-s1-branch-lock-and-evict" aria-label="Link to section">#</a>Lab S1: branch, lock, and evict</h2>
+<p>This is a <strong>concurrent-sharing extension</strong>, unlike the serial A-then-B guided
+lab above. Here there really are two live users of the shared prefix.</p>
+<p>Start with <a class="src" href="../../test/registered/unit/mem_cache/test_radix_cache_unit.py" title="Local source: sglang/test/registered/unit/mem_cache/test_radix_cache_unit.py">classic radix tests</a>
+and <a class="src" href="../../test/registered/unit/mem_cache/test_decode_radix_lock_ref.py" title="Local source: sglang/test/registered/unit/mem_cache/test_decode_radix_lock_ref.py">lock-reference tests</a>.</p>
+<ol>
+<li>Insert a prefix and two divergent suffixes.</li>
+<li>Predict the tree split.</li>
+<li>Protect the prefix for two users.</li>
+<li>Release only one user and attempt eviction.</li>
+<li>Release the second, evict, and predict allocator capacity.</li>
+<li>Repeat with a page boundary that cuts through the apparent string prefix.</li>
+</ol>
+<p>In a prepared <strong>Linux development environment</strong>, from the SGLang root:</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-bash">uv run --no-sync python -m pytest test/registered/unit/mem_cache/test_radix_cache_unit.py -q</code></pre></div>
+<p>Use the project&#39;s established environment and
+<a class="src" href="../../test/README.md" title="Local source: sglang/test/README.md">test instructions</a>. The test&#39;s logic can be CPU-based while
+imports still require the project stack; do not equate &quot;unit&quot; with dependency-free.</p>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> identify the exact moment protected state becomes evictable and the
+separate moment its storage is reclaimed.</p></div>
+<h2 id="lab-s2-establish-a-baseline-without-obsolete-benchmark-paths"><a class="anchor" href="#lab-s2-establish-a-baseline-without-obsolete-benchmark-paths" aria-label="Link to section">#</a>Lab S2: establish a baseline without obsolete benchmark paths</h2>
+<p>The canonical benchmark implementation in this checkout is
+<a class="src" href="../../python/sglang/benchmark/serving.py" title="Local source: sglang/python/sglang/benchmark/serving.py">serving benchmark</a>.
+<a class="src" href="../../python/sglang/bench_serving.py" title="Local source: sglang/python/sglang/bench_serving.py">The older module</a> is a deprecated compatibility
+shim. Prefer <code>sglang.benchmark.serving</code> in new experiments.</p>
+<p>Prerequisites: pinned installation, compatible GPU libraries/drivers, enough
+memory, model access, and a prepared environment. The following are small
+debugging settings, <strong>not</strong> production recommendations.</p>
+<p>Check options:</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-bash">uv run --no-sync python -m sglang.launch_server --help
+uv run --no-sync python -m sglang.benchmark.serving --help</code></pre></div>
+<p>In a dedicated Linux terminal:</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-bash">uv run --no-sync python -m sglang.launch_server --model-path Qwen/Qwen2.5-0.5B-Instruct --host 127.0.0.1 --port 30000 --context-length 4096 --max-running-requests 16 --chunked-prefill-size 512 --mem-fraction-static 0.7</code></pre></div>
+<p>From another terminal:</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-bash">curl --fail http://127.0.0.1:30000/health
+curl --fail http://127.0.0.1:30000/v1/models
+uv run --no-sync python -m sglang.benchmark.serving --backend sglang --host 127.0.0.1 --port 30000 --model Qwen/Qwen2.5-0.5B-Instruct --dataset-name random --random-input-len 256 --random-output-len 64 --num-prompts 100 --request-rate 2 --output-file learning-sglang-smoke.jsonl</code></pre></div>
+<p>This native-endpoint smoke test is not directly comparable to a differently
+configured vLLM test. For a real comparison, use an identical saved workload,
+endpoint semantics, sampling/stopping behavior, and the
+<a class="doc" href="../../../vllm/learning/html/03-roadmap-and-labs.html">shared protocol</a>.
+Different random-dataset implementations or even equal seeds do not guarantee
+equal token sequences.</p>
+<p>Dataset/tokenizer assets may require downloads. Check actual sampled lengths,
+successful request counts, and stop reasons. A 100-request smoke run cannot
+establish stable p99 behavior.</p>
+<p>Stop only your own server with Ctrl+C when finished.</p>
+<h2 id="lab-s3-observe-prefix-reuse-separately-from-batching"><a class="anchor" href="#lab-s3-observe-prefix-reuse-separately-from-batching" aria-label="Link to section">#</a>Lab S3: observe prefix reuse separately from batching</h2>
+<p>Use the <a class="src" href="../../test/registered/radix_cache/test_radix_cache_hit.py" title="Local source: sglang/test/registered/radix_cache/test_radix_cache_hit.py">cache-hit serving tests</a>
+as prior art and inspect the selected cache implementation.</p>
+<p>Prepare:</p>
+<ul>
+<li>a repeated long system/document prefix with varied short questions;</li>
+<li>equal-length prompts that diverge early;</li>
+<li>prompts that change adapter/cache namespace where supported.</li>
+</ul>
+<p>First run serially to expose prefill reuse; then run the fixed arrival trace
+under load. Compare cold and intentionally warm states. If testing
+<code>--disable-radix-cache</code>, inspect resolved configuration and initialization logs:
+the switch can select a different cache path and interact with model features.</p>
+<p>Record newly computed tokens, reusable prefix length, TTFT, decode latency,
+memory/capacity, and retractions. A shorter TTFT could be caused by warm
+compilation or batching; the cache counters and controlled input identity must
+support the reuse explanation.</p>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> explain a partial hit and a forced miss from token/key identity,
+not merely by quoting a cache-hit percentage.</p></div>
+<h2 id="lab-s4-compare-the-normal-and-overlap-loops"><a class="anchor" href="#lab-s4-compare-the-normal-and-overlap-loops" aria-label="Link to section">#</a>Lab S4: compare the normal and overlap loops</h2>
+<p>Read <a class="src" href="../../python/sglang/srt/managers/scheduler.py" title="Local source: sglang/python/sglang/srt/managers/scheduler.py">scheduler loops</a> and
+<a class="src" href="../../python/sglang/srt/managers/tp_worker.py" title="Local source: sglang/python/sglang/srt/managers/tp_worker.py">worker sampling</a>.</p>
+<p>Draw an iteration timeline with:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">ingest | plan | prepare inputs | forward | sample | process result | stream</code></pre></div>
+<p>Mark which iteration owns each result and where the schedule/forward stream
+dependencies lie. Identify the shared-read/write hazard guarded before result
+processing.</p>
+<p>On a supported configuration, compare baseline with
+<code>--disable-overlap-schedule</code> after checking current help. Hold graph, sampling,
+and workload settings fixed where possible. Use short profiles and separate
+unprofiled performance runs.</p>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> show an exposed gap removed by overlap and identify a case where a
+dependency prevents that overlap. Do not infer benefit solely from the flag.</p></div>
+<h2 id="lab-s5-unified-state-and-hicache"><a class="anchor" href="#lab-s5-unified-state-and-hicache" aria-label="Link to section">#</a>Lab S5: unified state and HiCache</h2>
+<p>Read <a class="src" href="../../python/sglang/srt/mem_cache/unified_cache/components/README.md" title="Local source: sglang/python/sglang/srt/mem_cache/unified_cache/components/README.md">component design</a>
+and <a class="src" href="../../docs/docs/advanced_features/hicache_design.mdx" title="Local source: sglang/docs/docs/advanced_features/hicache_design.mdx">HiCache design</a>.</p>
+<p>Paper/source exercise:</p>
+<ol>
+<li>Construct a prefix where Full state is present but a required Mamba checkpoint
+is absent.</li>
+<li>Explain why the longest token path is not a valid full cache hit.</li>
+<li>Identify when a branch needs independent recurrent state.</li>
+<li>Distinguish a device hit from host restoration and storage prefetch.</li>
+<li>Explain why another local instance cannot read this instance&#39;s private L2.</li>
+</ol>
+<p>GPU/storage extension, only with a supported model/configuration:</p>
+<ul>
+<li>compare working sets fitting L1, exceeding L1, and needing L3;</li>
+<li>report actual transfer bytes/time and useful tokens restored;</li>
+<li>test timeout/cancellation during restore on an isolated deployment;</li>
+<li>compare against recomputation, not only against &quot;no cache configured.&quot;</li>
+</ul>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> demonstrate which pool or tier is capacity/performance limiting and
+why adding another kind of memory may not fix it.</p></div>
+<h2 id="lab-s6-multimodal-equivalence-before-multimodal-speed"><a class="anchor" href="#lab-s6-multimodal-equivalence-before-multimodal-speed" aria-label="Link to section">#</a>Lab S6: multimodal equivalence before multimodal speed</h2>
+<p>Follow <a class="src" href="../../python/sglang/srt/models/qwen2_5_vl.py" title="Local source: sglang/python/sglang/srt/models/qwen2_5_vl.py">Qwen2.5-VL</a> and the selected
+<a class="src is-dir" href="../../python/sglang/srt/multimodal/processors" title="Local source: sglang/python/sglang/srt/multimodal/processors">processor</a>.</p>
+<p>Use one owned/public image with controlled processor settings:</p>
+<ol>
+<li>Record processed grid, feature count, placeholder spans, and positions.</li>
+<li>Repeat the image to test eligible processor/embedding/KV reuse separately.</li>
+<li>Substitute a same-sized different image; verify no invalid reuse.</li>
+<li>Increase resolution and attribute TTFT/memory growth to actual feature counts.</li>
+<li>Compare inline versus supported encoder-separated execution only after
+verifying input/feature equivalence.</li>
+</ol>
+<p>The <a class="src" href="../../docs/docs/advanced_features/epd_disaggregation.mdx" title="Local source: sglang/docs/docs/advanced_features/epd_disaggregation.mdx">EPD guide</a> separates
+encoder transport from global embedding caching. State which you enabled.</p>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> explain why processor, encoder, and LM prefix hit rates differ.</p></div>
+<h2 id="lab-s7-pd-ownership-and-failure-handling"><a class="anchor" href="#lab-s7-pd-ownership-and-failure-handling" aria-label="Link to section">#</a>Lab S7: PD ownership and failure handling</h2>
+<p>Read <a class="src" href="../../docs/docs/advanced_features/pd_disaggregation.mdx" title="Local source: sglang/docs/docs/advanced_features/pd_disaggregation.mdx">PD guide</a>,
+<a class="src" href="../../python/sglang/srt/disaggregation/prefill.py" title="Local source: sglang/python/sglang/srt/disaggregation/prefill.py">prefill path</a>, and
+<a class="src" href="../../python/sglang/srt/disaggregation/decode.py" title="Local source: sglang/python/sglang/srt/disaggregation/decode.py">decode path</a>.</p>
+<p>Do not copy a large-model cluster recipe onto unverified hardware. First make
+a state table for the selected transfer backend:</p>
+<div class="codeblock is-formula"><div class="codebar"><span>example / trace</span><button type="button" class="copy">Copy</button></div><pre><code class="lang-text">state | source KV owner | destination reservation | readiness
+      | timeout owner | success cleanup | abort cleanup</code></pre></div>
+<p>The inspected deferred-allocation policy has substantial compatibility
+restrictions. Its lesson is general: postponing destination reservation frees
+decode capacity but retains prefill state longer and changes overlap.</p>
+<p>If you have a compatible isolated cluster, test normal transfer, slow transfer,
+client cancellation, and worker failure. Count total resources on both sides.</p>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> prove decode cannot read unfinished state and that repeated failed
+handoffs do not leak capacity. A successful happy-path request is insufficient.</p></div>
+<h2 id="lab-s8-admission-reservation-versus-preemption"><a class="anchor" href="#lab-s8-admission-reservation-versus-preemption" aria-label="Link to section">#</a>Lab S8: admission reservation versus preemption</h2>
+<p>Read the <a class="doc" href="deep-dives.html#4-scheduling-policy-plus-capacity">scheduling deep dive</a>
+and its vLLM comparison table first.</p>
+<p>Paper exercise:</p>
+<ol>
+<li>A KV pool holds 100,000 tokens. Ten running requests each have a 1,000-token
+prompt, 200 generated tokens, and <code>max_new_tokens = 4000</code>. For this budget
+exercise, take current <strong>allocated</strong> KV capacity as 12,000 token slots;
+this is not a claim that the last sampled token already has computed KV.
+Assume the clip limit does not bind and <code>new_token_ratio = 0.5</code>.
+How many tokens does SGLang&#39;s admission estimate reserve for their future
+output? How much room remains for a new 2,000-token prompt with the same
+<code>max_new_tokens</code>?</li>
+<li>Repeat with ratio 0.1. Why does this admit more work but increase
+retraction risk?</li>
+<li>For the same state, describe vLLM&#39;s behavior: what is allocated now, and
+what happens when the pool runs out mid-decode?</li>
+</ol>
+<details class="reveal"><summary>Answer sketch for item 1</summary>
+
+<p>Current allocated KV: 12,000 token slots by assumption. Estimated running-output
+headroom: <code>10 * (4000 - 200) * 0.5 = 19,000</code>. Allocated plus reserved: 31,000, leaving
+69,000 in this simplified ledger. The new candidate&#39;s allowance is not
+ratio-scaled: before page overhead it needs <code>2000 + 4000 = 6,000</code>, so it still
+fits. Check <code>PrefillAdder.add_one_req</code> and
+<code>_get_running_request_total_token_offset</code> in
+<a class="src" href="../../python/sglang/srt/managers/schedule_policy.py" title="Local source: sglang/python/sglang/srt/managers/schedule_policy.py">schedule policy</a>.
+Real admission also applies chunking, page rounding, request-slot limits,
+and the selected allocator&#39;s memory budget.</p>
+</details>
+
+<p>Experiment, on an isolated supported deployment:</p>
+<ul>
+<li>Use one prompt set with <strong>two output-length distributions</strong>: requests that
+stop early relative to <code>max_new_tokens</code>, and requests forced to the limit
+where <code>ignore_eos</code> is supported.</li>
+<li>Sweep <code>--schedule-conservativeness</code> while holding everything else fixed.</li>
+<li>Record admitted concurrency, retraction counts, the logged
+<code>new_token_ratio</code> transitions, recomputed tokens, and p95 TTFT/ITL.</li>
+<li>Run the vLLM equivalent with matched resulting KV capacity and count
+preemptions.</li>
+</ul>
+<div class="callout gate"><div class="callout-label">Pass gate</div><p> explain which design wastes capacity and which design wastes
+compute for each distribution, using measured counters rather than intuition.</p></div>
+<h2 id="what-to-save-from-every-lab"><a class="anchor" href="#what-to-save-from-every-lab" aria-label="Link to section">#</a>What to save from every lab</h2>
+<p>Use the <a class="doc" href="../../../vllm/learning/html/03-roadmap-and-labs.html">shared manifest</a>.
+At minimum: exact source revision, effective configuration, workload identity,
+prediction, observed result, explanation, and remaining uncertainty.
+An honest negative result is more useful than a plausible unverified claim.</p>
+<div class="callout next"><div class="callout-label">Next step</div><p><a class="doc" href="../../../vllm/learning/html/04-comparison-and-reading.html">Cross-framework comparison and reading list</a>.</p></div>
+</article>
+    <nav class="pager"><a class="pager-prev" href="deep-dives.html"><span>← Previous</span><strong>SGLang: Deep dives</strong></a><a class="pager-next" href="../../../vllm/learning/html/03-roadmap-and-labs.html"><span>Next →</span><strong>Practice & reference: Roadmap & method</strong></a></nav>
+    <footer class="site-foot">Generated from the Markdown sources in <code>sglang/learning/source-labs.md</code>. Rebuild with <code>npm run build</code> in <code>vllm/learning/html-src</code>.</footer>
+  </main>
+  <nav class="toc" aria-label="On this page"><div class="toc-title">On this page</div><a class="toc-link d2" href="#guided-lab-two-requests-one-reusable-prefix">Guided lab: two requests, one reusable prefix</a><a class="toc-link d3" href="#1-predict-before-locating-the-implementation">1. Predict before locating the implementation</a><a class="toc-link d3" href="#2-locate-the-boundaries-on-windows-reading-only">2. Locate the boundaries on Windows (reading only)</a><a class="toc-link d3" href="#3-inspect-existing-tests-not-a-hand-written-mock-transcript">3. Inspect existing tests, not a hand-written mock transcript</a><a class="toc-link d3" href="#4-explain-before-trying-to-execute">4. Explain before trying to execute</a><a class="toc-link d2" href="#lab-s0-trace-three-representations-of-one-request">Lab S0: trace three representations of one request</a><a class="toc-link d2" href="#lab-s1-branch-lock-and-evict">Lab S1: branch, lock, and evict</a><a class="toc-link d2" href="#lab-s2-establish-a-baseline-without-obsolete-benchmark-paths">Lab S2: establish a baseline without obsolete benchmark paths</a><a class="toc-link d2" href="#lab-s3-observe-prefix-reuse-separately-from-batching">Lab S3: observe prefix reuse separately from batching</a><a class="toc-link d2" href="#lab-s4-compare-the-normal-and-overlap-loops">Lab S4: compare the normal and overlap loops</a><a class="toc-link d2" href="#lab-s5-unified-state-and-hicache">Lab S5: unified state and HiCache</a><a class="toc-link d2" href="#lab-s6-multimodal-equivalence-before-multimodal-speed">Lab S6: multimodal equivalence before multimodal speed</a><a class="toc-link d2" href="#lab-s7-pd-ownership-and-failure-handling">Lab S7: PD ownership and failure handling</a><a class="toc-link d2" href="#lab-s8-admission-reservation-versus-preemption">Lab S8: admission reservation versus preemption</a><a class="toc-link d2" href="#what-to-save-from-every-lab">What to save from every lab</a></nav>
+</div>
+<div class="modal" hidden><div class="modal-bar"><span class="modal-title">Diagram</span><span class="modal-hint">Scroll to zoom · drag to pan</span><button type="button" class="modal-close" aria-label="Close">✕</button></div><div class="modal-stage"></div></div>
+
+<script src="../../../vllm/learning/html/assets/search-index.js"></script>
+<script src="../../../vllm/learning/html/assets/vendor/mermaid.min.js"></script>
+<script src="../../../vllm/learning/html/assets/charts.js"></script>
+<script src="../../../vllm/learning/html/assets/widgets.js"></script>
+<script src="../../../vllm/learning/html/assets/mindmap.js"></script>
+<script src="../../../vllm/learning/html/assets/site.js"></script>
+</body>
+</html>
